@@ -1,31 +1,29 @@
 <template>
   <div>
     <h1>DeepLearning4J Studio</h1>
-    <p class="lead">
-      Use this document as a way to quickly start any new project.<br>
-      All you get is this text and a mostly barebones HTML document.
-    </p>
+    <p class="lead"></p>
 
-    <div class="card">
-      <div class="card-header">
-        Featured
-      </div>
-      <div class="card-body">
-        <h5 class="card-title">Special title treatment</h5>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
-      </div>
-    </div>
+    <ClosableCard
+      title="DL4J - Deep Learning for Java"
+      message="Deeplearning4j - Open-source, distributed, deep learning library for the JVM</p><p>DeepLearning4J Studio makes use of the DL4J libraries. To learn more about how Neural Networks are built, trained and used, you should visit the DL4J website and check the documentation."
+      buttonUrl="https://deeplearning4j.org/"
+      buttonText="deeplearning4j.org"
+      />
+
   </div>
 </template>
 <script>
   import assets from '../assets'
+  import ClosableCard from '../components/common/ClosableCard'
 
-    export default {
-      computed: {
-        logos() {
-          return assets
-        }
+  export default {
+    components: {
+      ClosableCard,
+    },
+    computed: {
+      logos() {
+        return assets
       }
     }
+  }
 </script>
