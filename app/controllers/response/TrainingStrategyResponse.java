@@ -5,8 +5,10 @@ import model.NNTrainingStrategy;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List; /**
- * (c) JBay Solutions 2010-2012 All rights reserved.
+import java.util.List;
+
+/**
+ * (c) JBay Solutions 2010-2020 All rights reserved.
  * <p>
  * User: RuiP
  * Date: 27-12-2019

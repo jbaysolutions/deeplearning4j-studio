@@ -30,7 +30,7 @@ import java.io.IOException;
 import java.util.Random;
 
 /**
- * (c) JBay Solutions 2010-2012 All rights reserved.
+ * (c) JBay Solutions 2010-2020 All rights reserved.
  * <p>
  * User: RuiP
  * Date: 02-12-2019

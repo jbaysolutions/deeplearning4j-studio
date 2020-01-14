@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * (c) JBay Solutions 2010-2012 All rights reserved.
+ * (c) JBay Solutions 2010-2020 All rights reserved.
  * <p>
  * User: RuiP
  * Date: 12-12-2019

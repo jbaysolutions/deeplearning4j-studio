@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * (c) JBay Solutions 2010-2012 All rights reserved.
+ * (c) JBay Solutions 2010-2020 All rights reserved.
  * <p>
  * User: RuiP
  * Date: 04-12-2019

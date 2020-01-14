@@ -4,7 +4,7 @@ import org.deeplearning4j.nn.conf.layers.Layer;
 import org.deeplearning4j.nn.conf.layers.SubsamplingLayer;
 
 /**
- * (c) JBay Solutions 2010-2012 All rights reserved.
+ * (c) JBay Solutions 2010-2020 All rights reserved.
  * <p>
  * User: RuiP
  * Date: 05-12-2019
