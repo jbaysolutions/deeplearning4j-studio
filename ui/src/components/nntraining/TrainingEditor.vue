@@ -17,11 +17,11 @@
       </div>
     </div>
 
-    <div v-if="training.rawStrategy.trainingType==='LOCAL'" class="col-12">
-      LOCAL
+    <div v-if="training && training.rawStrategy && training.rawStrategy.trainingType==='LOCAL'" class="col-12">
+      <RecordReaderConfiguration/>
     </div>
 
-    <div v-if="training.rawStrategy.trainingType==='SPARK'" class="col-12">
+    <div v-if="training && training.rawStrategy && training.rawStrategy.trainingType==='SPARK'" class="col-12">
       SPARK
     </div>
 
@@ -30,9 +30,12 @@
 
 <script>
   import {mapActions, mapGetters} from 'vuex';
+  import RecordReaderConfiguration from '../nntraining/local/RecordReaderConfiguration'
 
   export default {
-    components: {},
+    components: {
+      RecordReaderConfiguration,
+    },
     mounted() {
     },
     computed: {

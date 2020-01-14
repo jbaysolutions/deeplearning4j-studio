@@ -1,5 +1,7 @@
 package com.jbaysolutions.ailabs.builder.testing;
 
+import com.jbaysolutions.ailabs.builder.testing.local.NNRecordReaderWrapper;
+
 /**
  * (c) JBay Solutions 2010-2020 All rights reserved.
  * <p>
