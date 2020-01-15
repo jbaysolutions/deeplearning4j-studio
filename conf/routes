@@ -3,28 +3,31 @@
 # ~~~~
 
 # Load index page
-GET         /                                                    controllers.Assets.at(path="/public", file="index.html")
+GET         /                                                              controllers.Assets.at(path="/public", file="index.html")
 
 # An example route
-GET         /v1/javascript/routes.js                             controllers.HomeController.javascriptRoutes()
+GET         /v1/javascript/routes.js                                       controllers.ApplicationController.javascriptRoutes()
 
-GET         /v1/nnmodels/all                                     controllers.NNModelController.getAllModels()
-POST        /v1/nnmodels/create                                  controllers.NNModelController.createNewModel()
-POST        /v1/nnmodels/delete                                  controllers.NNModelController.deleteNNModel(id: Long)
-GET         /v1/nnmodels/modeldata/get/:id                       controllers.NNModelController.getModelData(id: Long)
+GET         /v1/nnmodels/all                                               controllers.NNModelController.getAllModels()
+POST        /v1/nnmodels/create                                            controllers.NNModelController.createNewModel()
+POST        /v1/nnmodels/delete                                            controllers.NNModelController.deleteNNModel(id: Long)
+GET         /v1/nnmodels/modeldata/get/:id                                 controllers.NNModelController.getModelData(id: Long)
 
-GET         /v1/nnmodels/modeldata/getdl4jconf/:id               controllers.NNModelController.getDL4JConfigForModel(id: Long)
-GET         /v1/nnmodels/modeldata/getdl4jcode/:id               controllers.NNModelController.getDL4JCodeForModel(id: Long)
+GET         /v1/nnmodels/modeldata/getdl4jconf/:id                         controllers.NNModelController.getDL4JConfigForModel(id: Long)
+GET         /v1/nnmodels/modeldata/getdl4jcode/:id                         controllers.NNModelController.getDL4JCodeForModel(id: Long)
 
 
-POST        /v1/nnmodels/modeldata/persist/:id                   controllers.NNModelController.persistCurrewntModelData(id: Long)
-GET         /v1/nnmodels/modeldata/helperdata                    controllers.NNModelController.getNNModelHelper()
-GET         /v1/nnmodels/modeldata/layer/clean/:layerType        controllers.NNModelController.generateCleanLayer(layerType: String)
+POST        /v1/nnmodels/modeldata/persist/:id                             controllers.NNModelController.persistCurrewntModelData(id: Long)
+GET         /v1/nnmodels/modeldata/helperdata                              controllers.NNModelController.getNNModelHelper()
+GET         /v1/nnmodels/modeldata/layer/clean/:layerType                  controllers.NNModelController.generateCleanLayer(layerType: String)
 
-GET         /v1/nnmodels/modeldata/training/all/:id              controllers.NNModelController.getAllTrainingStrategies(id: Long)
-POST        /v1/nnmodels/modeldata/training/create               controllers.NNModelController.createTrainingStrategy()
-GET         /v1/nnmodels/modeldata/training/strategy/:id         controllers.NNModelController.getTrainingStrategy(id: Long)
-POST        /v1/nnmodels/modeldata/training/delete               controllers.NNModelController.deleteTrainingStrategy(id: Long)
+GET         /v1/nnmodels/modeldata/training/all/:id                        controllers.NNModelController.getAllTrainingStrategies(id: Long)
+POST        /v1/nnmodels/modeldata/training/create                         controllers.NNModelController.createTrainingStrategy()
+GET         /v1/nnmodels/modeldata/training/strategy/:id                   controllers.NNModelController.getTrainingStrategy(id: Long)
+POST        /v1/nnmodels/modeldata/training/delete                         controllers.NNModelController.deleteTrainingStrategy(id: Long)
+
+GET         /v1/nnmodels/modeldata/training/clean/:recordReaderType        controllers.NNModelController.generateCleanRecordReader(recordReaderType: String)
+
 
 # Map static resources from the /public folder to the file resource paths
-GET         /*file                                               controllers.Assets.at(path="/public", file)
+GET         /*file                                                         controllers.Assets.at(path="/public", file)

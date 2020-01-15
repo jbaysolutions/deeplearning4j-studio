@@ -3,7 +3,7 @@ package controllers;
 import play.mvc.*;
 import play.routing.JavaScriptReverseRouter;
 
-public class HomeController extends Controller {
+public class ApplicationController extends Controller {
 
     public Result javascriptRoutes() {
         return ok(
@@ -22,7 +22,8 @@ public class HomeController extends Controller {
                         routes.javascript.NNModelController.getAllTrainingStrategies(),
                         routes.javascript.NNModelController.createTrainingStrategy(),
                         routes.javascript.NNModelController.getTrainingStrategy(),
-                        routes.javascript.NNModelController.deleteTrainingStrategy()
+                        routes.javascript.NNModelController.deleteTrainingStrategy(),
+                        routes.javascript.NNModelController.generateCleanRecordReader()
 
                 )  + "\nwindow.jsRoutes = jsRoutes;"
         ).as("text/javascript");

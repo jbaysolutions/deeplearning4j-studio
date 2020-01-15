@@ -85,3 +85,13 @@ export function getTrainingStrategy ({Vue, commit}, id) {
       throw error
     })
 }
+
+export function generateCleanRecordReader ({Vue, commit}, type) {
+  return axios.get(jsRoutes.controllers.NNModelController.generateCleanRecordReader(type).url)
+    .then((response) => {
+      return response.data;
+    }).catch((error) => {
+      console.log('Error detected ? ' + error);
+      throw error
+    })
+}

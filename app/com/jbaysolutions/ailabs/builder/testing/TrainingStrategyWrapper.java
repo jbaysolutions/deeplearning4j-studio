@@ -1,7 +1,5 @@
 package com.jbaysolutions.ailabs.builder.testing;
 
-import com.jbaysolutions.ailabs.builder.testing.local.NNRecordReaderWrapper;
-
 /**
  * (c) JBay Solutions 2010-2020 All rights reserved.
  * <p>
@@ -12,8 +10,8 @@ import com.jbaysolutions.ailabs.builder.testing.local.NNRecordReaderWrapper;
 public class TrainingStrategyWrapper {
 
     public TrainingType trainingType = null;
-    public NNRecordReaderWrapper recordReader = new NNRecordReaderWrapper();
 
+    public RecordReaderWrapper recordReader = null;
 
     public TrainingStrategyWrapper() {
     }

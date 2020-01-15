@@ -5,6 +5,7 @@ import com.jbaysolutions.ailabs.ModelHelperData;
 import com.jbaysolutions.ailabs.builder.MultiLayerConfigurationBuilder;
 import com.jbaysolutions.ailabs.builder.nnwrapper.LayerWrapper;
 import com.jbaysolutions.ailabs.builder.nnwrapper.MultiLayerWrapper;
+import com.jbaysolutions.ailabs.builder.testing.RecordReaderWrapper;
 import com.jbaysolutions.ailabs.builder.testing.TrainingStrategyWrapper;
 import controllers.request.CreateModelRequest;
 import controllers.request.CreateTrainingRequest;
@@ -194,5 +195,13 @@ public class NNModelController extends Controller {
 
         return ok();
     }
+
+    public Result generateCleanRecordReader(String recordReaderType) {
+            return ok(
+                    Json.toJson(
+                            RecordReaderWrapper.generate(RecordReaderWrapper.RecordReaderType.valueOf(recordReaderType))
+                    )
+            );
+        }
 
 }
