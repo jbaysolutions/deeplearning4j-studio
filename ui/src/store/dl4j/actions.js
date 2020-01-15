@@ -95,3 +95,27 @@ export function generateCleanRecordReader ({Vue, commit}, type) {
       throw error
     })
 }
+
+
+export function generateCleanInputSplit ({Vue, commit}, type) {
+  return axios.get(jsRoutes.controllers.NNModelController.generateCleanInputSplit(type).url)
+    .then((response) => {
+      return response.data;
+    }).catch((error) => {
+      console.log('Error detected ? ' + error);
+      throw error
+    })
+}
+
+export function persistCurrentTrainingStrategy ({Vue, commit, state}, id) {
+  return axios.post(jsRoutes.controllers.NNModelController.persistCurrentTrainingStrategy(id).url,
+          state.currentTrainingStrategy.rawStrategy
+    )
+    .then((response) => {
+      commit('setCurrentTrainingStrategy', response.data);
+      return response;
+    }).catch((error) => {
+        console.log('Error detected ? ' + error);
+      throw error
+    })
+}

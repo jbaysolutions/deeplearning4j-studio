@@ -23,7 +23,9 @@ public class ApplicationController extends Controller {
                         routes.javascript.NNModelController.createTrainingStrategy(),
                         routes.javascript.NNModelController.getTrainingStrategy(),
                         routes.javascript.NNModelController.deleteTrainingStrategy(),
-                        routes.javascript.NNModelController.generateCleanRecordReader()
+                        routes.javascript.NNModelController.generateCleanRecordReader(),
+                        routes.javascript.NNModelController.generateCleanInputSplit(),
+                        routes.javascript.NNModelController.persistCurrentTrainingStrategy()
 
                 )  + "\nwindow.jsRoutes = jsRoutes;"
         ).as("text/javascript");

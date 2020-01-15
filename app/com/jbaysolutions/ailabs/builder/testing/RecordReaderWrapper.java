@@ -1,6 +1,8 @@
 package com.jbaysolutions.ailabs.builder.testing;
 
-import com.jbaysolutions.ailabs.builder.testing.local.CSVRecordReaderParams;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.jbaysolutions.ailabs.builder.testing.local.CSVRecordReaderWrapper;
 
 /**
  * (c) JBay Solutions 2010-2012 All rights reserved.
@@ -9,13 +11,20 @@ import com.jbaysolutions.ailabs.builder.testing.local.CSVRecordReaderParams;
  * Date: 14-01-2020
  * Time: 19:31
  */
+@JsonTypeInfo(
+  use = JsonTypeInfo.Id.NAME,
+  include = JsonTypeInfo.As.PROPERTY,
+  property = "serializableHelperData")
+@JsonSubTypes({
+  @JsonSubTypes.Type(value = CSVRecordReaderWrapper.class, name = "CSV_RECORD_READER"),
+})
 public abstract class RecordReaderWrapper {
 
     public RecordReaderType type;
 
     public static Object generate(RecordReaderType recordReaderType) {
         if (recordReaderType == RecordReaderType.CSV_RECORD_READER) {
-            return new CSVRecordReaderParams();
+            return new CSVRecordReaderWrapper();
         }
         if (recordReaderType == RecordReaderType.CSV_REGEX_RECORD_READER) {
             // TODO

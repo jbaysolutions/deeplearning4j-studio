@@ -1,6 +1,7 @@
 package com.jbaysolutions.ailabs.builder.testing.local;
 
 import com.jbaysolutions.ailabs.builder.testing.RecordReaderWrapper;
+import com.jbaysolutions.ailabs.builder.testing.local.split.InputSplitWrapper;
 
 /**
  * (c) JBay Solutions 2010-2020 All rights reserved.
@@ -9,9 +10,9 @@ import com.jbaysolutions.ailabs.builder.testing.RecordReaderWrapper;
  * Date: 26-12-2019
  * Time: 23:11
  */
-public class CSVRecordReaderParams extends RecordReaderWrapper {
+public class CSVRecordReaderWrapper extends RecordReaderWrapper {
 
-    public CSVRecordReaderParams() {
+    public CSVRecordReaderWrapper() {
         this.type = RecordReaderType.CSV_RECORD_READER;
     }
 
@@ -19,5 +20,6 @@ public class CSVRecordReaderParams extends RecordReaderWrapper {
     public char delimiter = ',';
     public char quote = '\"';
 
+    public InputSplitWrapper inputSplit;
 
 }

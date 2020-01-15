@@ -7,6 +7,7 @@ import com.jbaysolutions.ailabs.builder.nnwrapper.LayerWrapper;
 import com.jbaysolutions.ailabs.builder.nnwrapper.MultiLayerWrapper;
 import com.jbaysolutions.ailabs.builder.testing.RecordReaderWrapper;
 import com.jbaysolutions.ailabs.builder.testing.TrainingStrategyWrapper;
+import com.jbaysolutions.ailabs.builder.testing.local.split.InputSplitWrapper;
 import controllers.request.CreateModelRequest;
 import controllers.request.CreateTrainingRequest;
 import controllers.response.GeneralResponse;
@@ -196,12 +197,34 @@ public class NNModelController extends Controller {
         return ok();
     }
 
+    @BodyParser.Of(BodyParser.Json.class)
+    public Result persistCurrentTrainingStrategy(long id) {
+        JsonNode rawData = request().body().asJson();
+
+        TrainingStrategyWrapper trainingStrategyWrapper = Json.fromJson(rawData, TrainingStrategyWrapper.class);
+
+        NNTrainingStrategy.updateWithRawData(
+                id,
+                rawData
+        );
+
+        return getTrainingStrategy(id);
+    }
+
     public Result generateCleanRecordReader(String recordReaderType) {
-            return ok(
-                    Json.toJson(
-                            RecordReaderWrapper.generate(RecordReaderWrapper.RecordReaderType.valueOf(recordReaderType))
-                    )
-            );
-        }
+        return ok(
+                Json.toJson(
+                        RecordReaderWrapper.generate(RecordReaderWrapper.RecordReaderType.valueOf(recordReaderType))
+                )
+        );
+    }
+
+    public Result generateCleanInputSplit(String inputSplitType) {
+        return ok(
+                Json.toJson(
+                        InputSplitWrapper.generate(InputSplitWrapper.InputSplitType.valueOf(inputSplitType))
+                )
+        );
+    }
 
 }

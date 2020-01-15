@@ -5,7 +5,7 @@
         <div class="col">
         </div>
         <div class="col">
-          <span v-if="updated" class="badge badge-danger">Model was modified, requires saving</span>
+          <span v-if="updated" class="badge badge-danger">Training strategy was modified, requires saving</span>
         </div>
         <div class="col">
           <div v-if="updated" class="text-right">
@@ -17,24 +17,31 @@
       </div>
     </div>
 
-    <div v-if="training && training.rawStrategy && training.rawStrategy.trainingType==='LOCAL'" class="col-12">
-      <RecordReaderConfiguration/>
+    <div v-if="training && training.rawStrategy && training.rawStrategy.trainingType==='LOCAL'" class="col-12 mt-3">
+      <RecordReaderConfiguration
+        @changed="updated=true"
+      />
     </div>
 
-    <div v-if="training && training.rawStrategy && training.rawStrategy.trainingType==='SPARK'" class="col-12">
+    <div v-if="training && training.rawStrategy && training.rawStrategy.trainingType==='SPARK'" class="col-12 mt-3">
       SPARK
     </div>
 
+    <GenerarErrorModal
+      ref="errorModal"
+    />
   </div>
 </template>
 
 <script>
   import {mapActions, mapGetters} from 'vuex';
   import RecordReaderConfiguration from '../nntraining/local/RecordReaderConfiguration'
+  import GenerarErrorModal from '../../components/modals/GenerarErrorModal';
 
   export default {
     components: {
       RecordReaderConfiguration,
+      GenerarErrorModal,
     },
     mounted() {
     },
@@ -51,5 +58,34 @@
         updated: false,
       }
     },
+    methods: {
+      ...mapActions('dl4j',
+          {
+            persistCurrentTrainingStrategy: 'persistCurrentTrainingStrategy',
+          },
+      ),
+      saveModel() {
+        let loader = this.$loading.show();
+        this.persistCurrentTrainingStrategy(this.training.strategyId)
+          .then((response) => {
+            this.updated = false;
+            loader.hide();
+            this.$notify({
+                type: 'success',
+                title: 'Success',
+                text: 'Training Strategy configuration was saved.',
+            });
+          }).catch((error) => {
+            console.log("---------" + error.response.data);
+            this.$notify({
+                type: 'error',
+                title: 'Error',
+                text: 'Problem saving the current configuration',
+            });
+            this.$refs.errorModal.openModal("Error Saving Training Strategy",error.response.data);
+            loader.hide();
+          });
+      }
+    }
   }
 </script>

@@ -58,15 +58,15 @@ public class NNTrainingStrategy extends Model {
     }
 
     public static NNTrainingStrategy updateWithRawData(long id, JsonNode rawData) {
-        NNTrainingStrategy model = find.byId(id);
-        if (model == null)
+        NNTrainingStrategy strategy = find.byId(id);
+        if (strategy == null)
             return null;
 
-        model.rawStrategy = rawData;
+        strategy.rawStrategy = rawData;
 
-        model.update();
-        model.refresh();
-        return model;
+        strategy.update();
+        strategy.refresh();
+        return strategy;
     }
 
     public static List<NNTrainingStrategy> findAllStrategiesForModel(long modelId) {

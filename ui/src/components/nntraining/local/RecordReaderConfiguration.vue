@@ -21,7 +21,7 @@
               <fieldset>
                 <label class="control-label" for="recordReader">Record Reader Type</label>
                 <div class="form-group">
-                  <select class="custom-select" id="recordReader" v-on:change="setRecordReader">
+                  <select class="form-control" id="recordReader" v-on:change="setRecordReader">
                     <option value=""></option>
                     <option value="CSV_RECORD_READER">CSV Record Reader</option>
                     <!--<option value="CSV_REGEX_RECORD_READER">CSV Regex Record Reader</option>-->
@@ -34,7 +34,7 @@
               <fieldset>
                 <label class="control-label" for="recordReader">Record Reader Type</label>
                 <div class="form-group">
-                  <select class="custom-select" id="recordReader" v-on:change="setRecordReader" v-model="training.rawStrategy.recordReader.type">
+                  <select class="form-control" id="recordReader" v-on:change="setRecordReader" v-model="training.rawStrategy.recordReader.type">
                     <option value="CSV_RECORD_READER">CSV Record Reader</option>
                     <!--<option value="CSV_REGEX_RECORD_READER">CSV Regex Record Reader</option>-->
                   </select>
@@ -49,8 +49,8 @@
 
         <CSVRecordReaderConfig
           v-if="training.rawStrategy &&  training.rawStrategy.recordReader && training.rawStrategy.recordReader.type==='CSV_RECORD_READER'"
+          @changed="notifyChange()"
         />
-
       </div>
     </div>
   </div>
@@ -86,12 +86,16 @@
           generateCleanRecordReader: 'generateCleanRecordReader',
         },
       ),
+      notifyChange() {
+        this.$emit('changed');
+      },
       setRecordReader(event) {
         if(event.target.value!=='') {
           console.log("---------> " + event.target.value);
           this.generateCleanRecordReader(event.target.value)
             .then((response) => {
               this.training.rawStrategy.recordReader = response;
+              this.notifyChange();
             }).catch((error) => {
               console.log('Error detected ? ' + error);
               throw error

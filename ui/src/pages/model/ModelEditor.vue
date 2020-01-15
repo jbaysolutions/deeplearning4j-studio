@@ -82,8 +82,7 @@
           />
         </div>
 
-        <NNTrainingTab
-        />
+        <NNTrainingTab/>
 
         <div class="tab-pane fade" id="deployment">
         </div>
