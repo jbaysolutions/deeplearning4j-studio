@@ -47,7 +47,7 @@ public class NNTrainingStrategy extends Model {
         NNTrainingStrategy model = new NNTrainingStrategy();
         model.name = request.name;
         model.creationDate = new Date();
-        model.rawStrategy = Json.toJson(new TrainingStrategyWrapper());
+        model.rawStrategy = null;
 
         model.save();
         return model.strategyId;

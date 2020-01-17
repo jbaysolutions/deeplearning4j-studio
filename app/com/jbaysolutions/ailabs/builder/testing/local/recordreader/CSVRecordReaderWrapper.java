@@ -1,6 +1,5 @@
-package com.jbaysolutions.ailabs.builder.testing.local;
+package com.jbaysolutions.ailabs.builder.testing.local.recordreader;
 
-import com.jbaysolutions.ailabs.builder.testing.RecordReaderWrapper;
 import com.jbaysolutions.ailabs.builder.testing.local.split.InputSplitWrapper;
 
 /**

@@ -86,8 +86,6 @@
                   v-if="reader && reader.inputSplit && reader.inputSplit.type==='FILE_SPLIT'"
                   @changed="notifyChange()"
                   />
-
-
               </div>
             </div>
         </div>

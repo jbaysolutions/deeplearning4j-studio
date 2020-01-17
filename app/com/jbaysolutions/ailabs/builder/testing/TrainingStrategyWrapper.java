@@ -1,5 +1,10 @@
 package com.jbaysolutions.ailabs.builder.testing;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.jbaysolutions.ailabs.builder.testing.local.LocalTrainingStrategyWrapper;
+import com.jbaysolutions.ailabs.builder.testing.spark.SparkTrainingStrategyWrapper;
+
 /**
  * (c) JBay Solutions 2010-2020 All rights reserved.
  * <p>
@@ -7,17 +12,25 @@ package com.jbaysolutions.ailabs.builder.testing;
  * Date: 27-12-2019
  * Time: 13:24
  */
-public class TrainingStrategyWrapper {
+@JsonTypeInfo(
+  use = JsonTypeInfo.Id.NAME,
+  include = JsonTypeInfo.As.PROPERTY,
+  property = "serializableHelperData")
+@JsonSubTypes({
+  @JsonSubTypes.Type(value = LocalTrainingStrategyWrapper.class, name = "LOCAL"),
+  @JsonSubTypes.Type(value = SparkTrainingStrategyWrapper.class, name = "SPARK"),
+})
+public abstract class TrainingStrategyWrapper {
 
     public TrainingType trainingType = null;
 
-    public RecordReaderWrapper recordReader = null;
+    public static Object generate(TrainingType type) {
+        if ( type== TrainingType.LOCAL)
+            return new LocalTrainingStrategyWrapper();
+        if ( type== TrainingType.SPARK)
+            return new SparkTrainingStrategyWrapper();
 
-    public TrainingStrategyWrapper() {
-    }
-
-    public TrainingStrategyWrapper(TrainingType trainingType) {
-        this.trainingType = trainingType;
+        throw new RuntimeException("Not Implemented");
     }
 
     public enum TrainingType {

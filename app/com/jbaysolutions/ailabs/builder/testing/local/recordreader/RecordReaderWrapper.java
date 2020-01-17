@@ -1,8 +1,7 @@
-package com.jbaysolutions.ailabs.builder.testing;
+package com.jbaysolutions.ailabs.builder.testing.local.recordreader;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.jbaysolutions.ailabs.builder.testing.local.CSVRecordReaderWrapper;
 
 /**
  * (c) JBay Solutions 2010-2012 All rights reserved.

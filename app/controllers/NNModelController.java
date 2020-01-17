@@ -5,7 +5,7 @@ import com.jbaysolutions.ailabs.ModelHelperData;
 import com.jbaysolutions.ailabs.builder.MultiLayerConfigurationBuilder;
 import com.jbaysolutions.ailabs.builder.nnwrapper.LayerWrapper;
 import com.jbaysolutions.ailabs.builder.nnwrapper.MultiLayerWrapper;
-import com.jbaysolutions.ailabs.builder.testing.RecordReaderWrapper;
+import com.jbaysolutions.ailabs.builder.testing.local.recordreader.RecordReaderWrapper;
 import com.jbaysolutions.ailabs.builder.testing.TrainingStrategyWrapper;
 import com.jbaysolutions.ailabs.builder.testing.local.split.InputSplitWrapper;
 import controllers.request.CreateModelRequest;
@@ -23,7 +23,6 @@ import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -167,7 +166,7 @@ public class NNModelController extends Controller {
         NNTrainingStrategy strategy = new NNTrainingStrategy();
         strategy.name = req.name;
         strategy.model = model;
-        strategy.rawStrategy = Json.toJson(new TrainingStrategyWrapper(req.type));
+        strategy.rawStrategy = Json.toJson(TrainingStrategyWrapper.generate(req.type));
         strategy.save();
         return getAllTrainingStrategies(req.modelId);
     }
