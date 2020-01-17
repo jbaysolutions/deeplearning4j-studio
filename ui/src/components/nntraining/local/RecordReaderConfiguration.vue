@@ -19,6 +19,9 @@
           <div v-for="(item, index) in training.rawStrategy.recordReader">
 
             <div class="row">
+              <div class="col-12">
+                <h5>Record Reader {{index+1}}</h5>
+              </div>
               <div class="col-6">
                 <div class="form-group">
                   <fieldset>
@@ -46,20 +49,30 @@
                 </fieldset>
               </div>
             </div>
+
             <CSVRecordReaderConfig
               v-if="item.type==='CSV_RECORD_READER'"
               :position="index"
               @changed="notifyChange()"
             />
 
+            <!-- TODO ADD MORE TYPES HERE !!!!!-->
+
           </div>
+
+          <div class="row mb-3" v-if="training.rawStrategy.recordReader.length===1 && training.rawStrategy.recordReader[0].usedFor!=='BOTH'">
+            <div class="col-12 text-center">
+              <button type="button" class="btn btn-primary" v-on:click="addNewRecordReader()">
+                <i class="fas fa-plus"></i>
+              </button>
+            </div>
+          </div>
+
         </div>
-
-
         <div v-else>
           <div class="row mb-3">
             <div class="col-12 text-center">
-              <button type="button" class="btn btn-primary" v-on:click="addNewRecordReader(0)">
+              <button type="button" class="btn btn-primary" v-on:click="addNewRecordReader()">
                 <i class="fas fa-plus"></i>
               </button>
             </div>
@@ -103,7 +116,7 @@
       notifyChange() {
         this.$emit('changed');
       },
-      addNewRecordReader(position) {
+      addNewRecordReader() {
         this.generateCleanRecordReader("CSV_RECORD_READER")
           .then((response) => {
             this.training.rawStrategy.recordReader.push(response);
