@@ -34,6 +34,12 @@
     },
     mounted() {
     },
+    props: {
+      position: {
+        type: Number,
+        required: true,
+      },
+    },
     data() {
       return {
       }
@@ -45,8 +51,8 @@
         },
       ),
       inputSplit() {
-        if (this.training && this.training.rawStrategy && this.training.rawStrategy.recordReader && this.training.rawStrategy.recordReader.inputSplit) {
-          return this.training.rawStrategy.recordReader.inputSplit;
+        if (this.training && this.training.rawStrategy && this.training.rawStrategy.recordReader[this.position] && this.training.rawStrategy.recordReader[this.position].inputSplit) {
+          return this.training.rawStrategy.recordReader[this.position].inputSplit;
         } else {
           return {
             allowFormat: [],

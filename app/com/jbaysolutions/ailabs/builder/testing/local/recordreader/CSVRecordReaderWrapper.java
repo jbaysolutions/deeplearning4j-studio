@@ -21,4 +21,5 @@ public class CSVRecordReaderWrapper extends RecordReaderWrapper {
 
     public InputSplitWrapper inputSplit;
 
+
 }

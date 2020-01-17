@@ -21,6 +21,8 @@ public abstract class RecordReaderWrapper {
 
     public RecordReaderType type;
 
+    public RecordReaderUsedForType usedFor =  RecordReaderUsedForType.TRAINING;
+
     public static Object generate(RecordReaderType recordReaderType) {
         if (recordReaderType == RecordReaderType.CSV_RECORD_READER) {
             return new CSVRecordReaderWrapper();
@@ -34,5 +36,11 @@ public abstract class RecordReaderWrapper {
     public enum RecordReaderType {
         CSV_RECORD_READER,
         CSV_REGEX_RECORD_READER
+    }
+
+    public enum RecordReaderUsedForType {
+        TRAINING,
+        TESTING,
+        BOTH;
     }
 }

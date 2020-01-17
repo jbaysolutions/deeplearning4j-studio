@@ -55,39 +55,42 @@
     <div class="row">
       <div class="col-12">
         <div class="card border-primary mb-3">
-            <div class="card-header" data-toggle="collapse" :href="'#'+initializerId"  v-on:click="initializerOpen=!initializerOpen" style="cursor: pointer">
-              Initializing CSV Record Reader
-              <button
-                type="button"
-                class="close"
-                data-toggle="collapse"
-                :href="'#'+initializerId"
-                v-on:click="initializerOpen=!initializerOpen"
-              >
-                <i v-if="initializerOpen" class="fas fa-minus-square"></i>
-                <i v-else class="fas fa-plus-square"></i>
-              </button>
-            </div>
-            <div class="collapse" :id="initializerId">
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-6">
-                    <div class="form-group">
-                      <label for="inputSplitSelector">Select Input Split</label>
-                      <select class="form-control" id="inputSplitSelector" v-on:change="setInputSplit" v-model="spliter">
-                        <option value=""></option>
-                        <option value="FILE_SPLIT">File Split</option>
-                      </select>
-                    </div>
+
+          <div class="card-header" data-toggle="collapse" :href="'#'+initializerId"  v-on:click="initializerOpen=!initializerOpen" style="cursor: pointer">
+            Initializing CSV Record Reader
+            <button
+              type="button"
+              class="close"
+              data-toggle="collapse"
+              :href="'#'+initializerId"
+              v-on:click="initializerOpen=!initializerOpen"
+            >
+              <i v-if="initializerOpen" class="fas fa-minus-square"></i>
+              <i v-else class="fas fa-plus-square"></i>
+            </button>
+          </div>
+          <div class="collapse" :id="initializerId">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-6">
+                  <div class="form-group">
+                    <label for="inputSplitSelector">Select Input Split</label>
+                    <select class="form-control" id="inputSplitSelector" v-on:change="setInputSplit" v-model="spliter">
+                      <option value=""></option>
+                      <option value="FILE_SPLIT">File Split</option>
+                    </select>
                   </div>
                 </div>
-
-                <FileSplitConfig
-                  v-if="reader && reader.inputSplit && reader.inputSplit.type==='FILE_SPLIT'"
-                  @changed="notifyChange()"
-                  />
               </div>
+
+              <FileSplitConfig
+                v-if="reader && reader.inputSplit && reader.inputSplit.type==='FILE_SPLIT'"
+                :position="position"
+                @changed="notifyChange()"
+                />
             </div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -103,6 +106,12 @@
       FileSplitConfig,
     },
     mounted() {
+    },
+    props: {
+      position: {
+        type: Number,
+        required: true,
+      },
     },
     data() {
       return {
@@ -121,10 +130,10 @@
       ),
       reader() {
         if (this.training && this.training.rawStrategy && this.training.rawStrategy.recordReader) {
-          if (this.training.rawStrategy.recordReader.inputSplit) {
-            this.spliter = this.training.rawStrategy.recordReader.inputSplit.type;
+          if (this.training.rawStrategy.recordReader[this.position].inputSplit) {
+            this.spliter = this.training.rawStrategy.recordReader[this.position].inputSplit.type;
           }
-          return this.training.rawStrategy.recordReader;
+          return this.training.rawStrategy.recordReader[this.position];
         } else {
           this.spliter = '';
           return {
@@ -156,6 +165,7 @@
           this.generateCleanInputSplit(event.target.value)
             .then((response) => {
               this.reader.inputSplit = response;
+              this.spliter = this.reader.inputSplit.type;
               this.notifyChange();
             }).catch((error) => {
               console.log('Error detected ? ' + error);
