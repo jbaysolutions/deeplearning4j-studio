@@ -24,6 +24,26 @@
       <EarlyStoppingTrainerConfig
         @changed="updated=true"
       />
+
+      <div class="card border-primary mb-3" >
+        <div class="card-header">
+          <i class="fas fa-running"></i>
+          Perform Training
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12">
+              <label class="control-label" >Training Data</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <label class="control-label" >Testing Data</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <div v-if="training && training.rawStrategy && training.rawStrategy.trainingType==='SPARK'" class="col-12 mt-3">
@@ -38,7 +58,7 @@
 
 <script>
   import {mapActions, mapGetters} from 'vuex';
-  import RecordReaderConfiguration from '../nntraining/local/RecordReaderConfiguration'
+  import RecordReaderConfiguration from '../nntraining/local/recordReaders/RecordReaderConfiguration'
   import EarlyStoppingTrainerConfig from '../nntraining/local/trainer/EarlyStoppingTrainerConfig'
   import GenerarErrorModal from '../../components/modals/GenerarErrorModal';
 

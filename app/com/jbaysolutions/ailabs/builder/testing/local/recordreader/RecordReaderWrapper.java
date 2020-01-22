@@ -20,8 +20,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 public abstract class RecordReaderWrapper {
 
     public RecordReaderType type;
-
-    public RecordReaderUsedForType usedFor =  RecordReaderUsedForType.TRAINING;
+    public String name;
 
     public static Object generate(RecordReaderType recordReaderType) {
         if (recordReaderType == RecordReaderType.CSV_RECORD_READER) {
@@ -38,9 +37,4 @@ public abstract class RecordReaderWrapper {
         CSV_REGEX_RECORD_READER
     }
 
-    public enum RecordReaderUsedForType {
-        TRAINING,
-        TESTING,
-        BOTH;
-    }
 }
