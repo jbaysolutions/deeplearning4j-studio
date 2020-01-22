@@ -1,11 +1,10 @@
 <template>
   <div class="card border-primary mb-3">
     <div class="card-header" data-toggle="collapse" :href="'#'+widgetId" v-on:click="opened=!opened">
-      <strong v-if="item.type==='MAX_SCORE'">Maximum Score Condition</strong>
+      <strong v-if="item.type==='CLASSIFICATION_SCORE'">Score Classification Calculator</strong>
 
-      <span v-if="item.type==='MAX_SCORE'" class="badge badge-pill badge-dark">Score: {{item.score}}</span>
+      <span v-if="item.type==='CLASSIFICATION_SCORE'" class="badge badge-pill badge-dark">Metric: {{item.metric}}</span>
 
-      <span class=""></span>
       <button
         type="button"
         class="close"
@@ -22,26 +21,30 @@
                     v-on:click="notifyDelete()"
             >
               <i class="fas fa-trash-alt"></i>
-              Delete Condition
+              Remove Calculator
             </button>
           </div>
         </div>
-        <div class="row">
+
+        <div class="row" v-if="item.type==='CLASSIFICATION_SCORE'">
           <div class="col-6">
             <div class="form-group">
-              <fieldset v-if="item.type==='MAX_SCORE'">
-                <label class="control-label" for="maxScoreField">Maximum Expected Score</label>
-                <input
-                  v-model="item.score"
+              <fieldset>
+                <label class="control-label" for="metricField">Metric to Score</label>
+                <select
+                  class="custom-select"
+                  id="metricField"
                   v-on:change="notifyChange()"
-                  class="form-control" id="maxScoreField" type="number"
-                  placeholder="The maximum score for iteration to stop" >
+                  v-model="item.metric"
+                >
+                  <option v-for="item in helper.localScoreCalculatorMetric" :value="item.key">{{item.description}}</option>
+                </select>
               </fieldset>
             </div>
           </div>
           <div class="col-6">
             <div class="form-group">
-              <!--<fieldset v-if="item.type==='MAX_SCORE'">
+              <!--<fieldset v-if="item.type==='SCORE_IMPROVEMENT'">
                 <label class="control-label" for="minImprovementField">Min. Improvement Threshold</label>
                 <input
                   v-model="item.minImprovement"
@@ -67,9 +70,6 @@
         type: Object,
         required: true,
       },
-      index: {
-        type: Number,
-      },
     },
     data() {
       return {
@@ -92,7 +92,7 @@
         this.$emit('changed');
       },
       notifyDelete() {
-        this.$emit('toDelete', this.index);
+        this.$emit('toDelete');
       }
     }
 

@@ -2,8 +2,10 @@ package com.jbaysolutions.ailabs;
 
 import com.jbaysolutions.ailabs.builder.nnwrapper.LayerWrapper;
 import com.jbaysolutions.ailabs.builder.nnwrapper.MultiLayerWrapper;
+import com.jbaysolutions.ailabs.builder.testing.local.trainer.helper.ClassificationScoreCalculatorWrapper;
 import com.jbaysolutions.ailabs.builder.testing.local.trainer.helper.EpochTerminationConditionWrapper;
 import com.jbaysolutions.ailabs.builder.testing.local.trainer.helper.IterationTerminationConditionWrapper;
+import com.jbaysolutions.ailabs.builder.testing.local.trainer.helper.ScoreCalculatorWrapper;
 import org.deeplearning4j.nn.api.OptimizationAlgorithm;
 import org.deeplearning4j.nn.weights.WeightInit;
 import org.nd4j.linalg.activations.Activation;
@@ -31,6 +33,9 @@ public class ModelHelperData {
 
     public List<GeneralOption> localEpochTerminationCondition = new ArrayList<GeneralOption>();
     public List<GeneralOption> localIterationTerminationCondition = new ArrayList<GeneralOption>();
+    public List<GeneralOption> localScoreCalculator = new ArrayList<GeneralOption>();
+
+    public List<GeneralOption> localScoreCalculatorMetric = new ArrayList<GeneralOption>();
 
     public ModelHelperData() {
         optimizationAlgorithmList.add(new GeneralOption(OptimizationAlgorithm.CONJUGATE_GRADIENT.name(), "Conjugate Gradient"));
@@ -108,7 +113,17 @@ public class ModelHelperData {
         localEpochTerminationCondition.add(new GeneralOption(EpochTerminationConditionWrapper.EpochTerminationConditionType.MAX_EPOCHS.name(), "Maximum Number of Epochs"));
         localEpochTerminationCondition.add(new GeneralOption(EpochTerminationConditionWrapper.EpochTerminationConditionType.BEST_SCORE.name(), "Best Expected Score Achieved"));
         localEpochTerminationCondition.add(new GeneralOption(EpochTerminationConditionWrapper.EpochTerminationConditionType.SCORE_IMPROVEMENT.name(), "Score Improvements"));
+
         localIterationTerminationCondition.add(new GeneralOption(IterationTerminationConditionWrapper.IterationTerminationConditionType.MAX_SCORE.name(), "Maximum Score"));
+
+        localScoreCalculator.add(new GeneralOption(ScoreCalculatorWrapper.ScoreCalculatorType.CLASSIFICATION_SCORE.name(), "Score Classification Calculator"));
+
+        localScoreCalculatorMetric.add(new GeneralOption(ClassificationScoreCalculatorWrapper.ClassificationMetric.ACCURACY.name(), "Accuracy"));
+        localScoreCalculatorMetric.add(new GeneralOption(ClassificationScoreCalculatorWrapper.ClassificationMetric.F1.name(), "F1"));
+        localScoreCalculatorMetric.add(new GeneralOption(ClassificationScoreCalculatorWrapper.ClassificationMetric.PRECISION.name(), "Precision"));
+        localScoreCalculatorMetric.add(new GeneralOption(ClassificationScoreCalculatorWrapper.ClassificationMetric.RECALL.name(), "Recall"));
+        localScoreCalculatorMetric.add(new GeneralOption(ClassificationScoreCalculatorWrapper.ClassificationMetric.GMEASURE.name(), "G Measure"));
+        localScoreCalculatorMetric.add(new GeneralOption(ClassificationScoreCalculatorWrapper.ClassificationMetric.MCC.name(), "MCC"));
     }
 
     public class GeneralOption{

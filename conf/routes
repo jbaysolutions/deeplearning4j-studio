@@ -30,6 +30,7 @@ GET         /v1/nnmodels/modeldata/training/clean/:recordReaderType             
 GET         /v1/nnmodels/modeldata/training/inputsplit/clean/:inputSplitType        controllers.NNModelController.generateCleanInputSplit(inputSplitType: String)
 GET         /v1/nnmodels/modeldata/training/localEpoch/clean/:conditionType         controllers.NNModelController.generateCleanLocalEpochTermCodition(conditionType: String)
 GET         /v1/nnmodels/modeldata/training/localIter/clean/:conditionType          controllers.NNModelController.generateCleanLocalIterationTermCodition(conditionType: String)
+GET         /v1/nnmodels/modeldata/training/localscore/clean/:scoreType             controllers.NNModelController.generateCleanLocalScoreCalculator(scoreType: String)
 
 POST        /v1/nnmodels/modeldata/training/persist/:id                             controllers.NNModelController.persistCurrentTrainingStrategy(id: Long)
 

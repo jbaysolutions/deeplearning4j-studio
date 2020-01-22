@@ -26,7 +26,7 @@
       <div class="card-body">
         <div class="row">
           <div class="col-12 text-right">
-            <button type="button" class="btn btn-primary btn-sm"
+            <button type="button" class="btn btn-danger btn-sm"
                     v-on:click="notifyDelete()"
             >
               <i class="fas fa-trash-alt"></i>
