@@ -21,10 +21,13 @@
       <RecordReaderConfiguration
         @changed="updated=true"
       />
+      <EarlyStoppingTrainerConfig
+        @changed="updated=true"
+      />
     </div>
 
     <div v-if="training && training.rawStrategy && training.rawStrategy.trainingType==='SPARK'" class="col-12 mt-3">
-      SPARK
+      SPARK NOT IMPLEMENTED YET
     </div>
 
     <GenerarErrorModal
@@ -36,11 +39,14 @@
 <script>
   import {mapActions, mapGetters} from 'vuex';
   import RecordReaderConfiguration from '../nntraining/local/RecordReaderConfiguration'
+  import EarlyStoppingTrainerConfig from '../nntraining/local/trainer/EarlyStoppingTrainerConfig'
   import GenerarErrorModal from '../../components/modals/GenerarErrorModal';
 
   export default {
     components: {
       RecordReaderConfiguration,
+      EarlyStoppingTrainerConfig,
+
       GenerarErrorModal,
     },
     mounted() {

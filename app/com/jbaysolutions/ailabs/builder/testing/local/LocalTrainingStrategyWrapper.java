@@ -2,6 +2,7 @@ package com.jbaysolutions.ailabs.builder.testing.local;
 
 import com.jbaysolutions.ailabs.builder.testing.TrainingStrategyWrapper;
 import com.jbaysolutions.ailabs.builder.testing.local.recordreader.RecordReaderWrapper;
+import com.jbaysolutions.ailabs.builder.testing.local.trainer.EarlyStoppingTrainerWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,8 @@ import java.util.List;
 public class LocalTrainingStrategyWrapper extends TrainingStrategyWrapper {
 
     public List<RecordReaderWrapper> recordReader = new ArrayList<>();
+
+    public EarlyStoppingTrainerWrapper earlyStoppingTrainer = new EarlyStoppingTrainerWrapper();
 
     public LocalTrainingStrategyWrapper() {
         this.trainingType = TrainingType.LOCAL;

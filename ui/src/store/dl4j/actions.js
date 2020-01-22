@@ -96,9 +96,28 @@ export function generateCleanRecordReader ({Vue, commit}, type) {
     })
 }
 
-
 export function generateCleanInputSplit ({Vue, commit}, type) {
   return axios.get(jsRoutes.controllers.NNModelController.generateCleanInputSplit(type).url)
+    .then((response) => {
+      return response.data;
+    }).catch((error) => {
+      console.log('Error detected ? ' + error);
+      throw error
+    })
+}
+
+export function generateCleanLocalEpochTermCodition ({Vue, commit}, type) {
+  return axios.get(jsRoutes.controllers.NNModelController.generateCleanLocalEpochTermCodition(type).url)
+    .then((response) => {
+      return response.data;
+    }).catch((error) => {
+      console.log('Error detected ? ' + error);
+      throw error
+    })
+}
+
+export function generateCleanLocalIterationTermCodition ({Vue, commit}, type) {
+  return axios.get(jsRoutes.controllers.NNModelController.generateCleanLocalIterationTermCodition(type).url)
     .then((response) => {
       return response.data;
     }).catch((error) => {

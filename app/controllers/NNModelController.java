@@ -8,6 +8,8 @@ import com.jbaysolutions.ailabs.builder.nnwrapper.MultiLayerWrapper;
 import com.jbaysolutions.ailabs.builder.testing.local.recordreader.RecordReaderWrapper;
 import com.jbaysolutions.ailabs.builder.testing.TrainingStrategyWrapper;
 import com.jbaysolutions.ailabs.builder.testing.local.split.InputSplitWrapper;
+import com.jbaysolutions.ailabs.builder.testing.local.trainer.helper.EpochTerminationConditionWrapper;
+import com.jbaysolutions.ailabs.builder.testing.local.trainer.helper.IterationTerminationConditionWrapper;
 import controllers.request.CreateModelRequest;
 import controllers.request.CreateTrainingRequest;
 import controllers.response.GeneralResponse;
@@ -222,6 +224,22 @@ public class NNModelController extends Controller {
         return ok(
                 Json.toJson(
                         InputSplitWrapper.generate(InputSplitWrapper.InputSplitType.valueOf(inputSplitType))
+                )
+        );
+    }
+
+    public Result generateCleanLocalEpochTermCodition(String conditionType) {
+        return ok(
+                Json.toJson(
+                        EpochTerminationConditionWrapper.generate(EpochTerminationConditionWrapper.EpochTerminationConditionType.valueOf(conditionType))
+                )
+        );
+    }
+
+    public Result generateCleanLocalIterationTermCodition(String conditionType) {
+        return ok(
+                Json.toJson(
+                        IterationTerminationConditionWrapper.generate(IterationTerminationConditionWrapper.IterationTerminationConditionType.valueOf(conditionType))
                 )
         );
     }
