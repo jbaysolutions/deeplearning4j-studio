@@ -28,6 +28,8 @@ public class ApplicationController extends Controller {
                         routes.javascript.NNModelController.generateCleanLocalEpochTermCodition(),
                         routes.javascript.NNModelController.generateCleanLocalIterationTermCodition(),
                         routes.javascript.NNModelController.generateCleanLocalScoreCalculator(),
+                        routes.javascript.NNModelController.generateCleanLocalDatasetIterator(),
+                        
                         routes.javascript.NNModelController.persistCurrentTrainingStrategy()
 
                 )  + "\nwindow.jsRoutes = jsRoutes;"

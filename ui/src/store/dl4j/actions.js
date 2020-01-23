@@ -136,6 +136,16 @@ export function generateCleanLocalScoreCalculator ({Vue, commit}, type) {
     })
 }
 
+export function generateCleanLocalDatasetIterator ({Vue, commit}, type) {
+  return axios.get(jsRoutes.controllers.NNModelController.generateCleanLocalDatasetIterator(type).url)
+    .then((response) => {
+      return response.data;
+    }).catch((error) => {
+      console.log('Error detected ? ' + error);
+      throw error
+    })
+}
+
 export function persistCurrentTrainingStrategy ({Vue, commit, state}, id) {
   return axios.post(jsRoutes.controllers.NNModelController.persistCurrentTrainingStrategy(id).url,
           state.currentTrainingStrategy.rawStrategy

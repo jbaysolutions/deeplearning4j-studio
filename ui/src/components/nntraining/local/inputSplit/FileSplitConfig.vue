@@ -18,8 +18,8 @@
     <div class="col-6">
       <div class="form-group">
         <div class="custom-control custom-switch">
-          <input type="checkbox" class="custom-control-input" id="customSwitch1" v-model="inputSplit.recursive"  v-on:change="notifyChange()">
-          <label class="custom-control-label" for="customSwitch1">Recursive?</label>
+          <input type="checkbox" class="custom-control-input" :id="'splitFileRecursiveField'+splitterid" v-model="inputSplit.recursive"  v-on:change="notifyChange()">
+          <label class="custom-control-label" :for="'splitFileRecursiveField'+splitterid">Recursive?</label>
         </div>
       </div>
     </div>
@@ -42,6 +42,7 @@
     },
     data() {
       return {
+        splitterid: this.generateID(),
       }
     },
     computed: {
@@ -66,6 +67,9 @@
     methods: {
       notifyChange() {
         this.$emit('changed');
+      },
+      generateID() {
+        return (Math.random()+"").replace("0.","AAA");
       },
     }
   }

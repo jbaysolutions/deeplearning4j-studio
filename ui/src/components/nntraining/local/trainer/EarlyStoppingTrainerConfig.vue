@@ -42,8 +42,9 @@
               @changed="notifyChange"
             />
           </div>
-          <div class="col-12 text-center" v-if="!trainer.scoreCalculator">
-            <button type="button" class="btn btn-primary btn-sm" v-on:click="$refs.createScoreCalculator.openModal()">
+          <div class="col-12 text-center" v-show="!trainer.scoreCalculator">
+            <button type="button" class="btn btn-primary btn-sm"
+                    v-on:click="$refs.createScoreCalculator.openModal()">
               <i class="fas fa-plus"></i>
               Set Score Calculator
             </button>
@@ -126,6 +127,7 @@
   import CreateLocalEpochTermCondModal from '../../../modals/CreateLocalEpochTermCondModal'
   import CreateLocalIterationTermCondModal from '../../../modals/CreateLocalIterationTermCondModal'
   import CreateLocalScoreCalculatorModal from '../../../modals/CreateLocalScoreCalculatorModal'
+
   import EpochTermCondItem from './util/EpochTermCondItem'
   import IterationTermCondItem from './util/IterationTermCondItem'
   import ScoreCalculatorItem from './util/ScoreCalculatorItem'

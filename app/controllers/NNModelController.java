@@ -5,6 +5,7 @@ import com.jbaysolutions.ailabs.ModelHelperData;
 import com.jbaysolutions.ailabs.builder.MultiLayerConfigurationBuilder;
 import com.jbaysolutions.ailabs.builder.nnwrapper.LayerWrapper;
 import com.jbaysolutions.ailabs.builder.nnwrapper.MultiLayerWrapper;
+import com.jbaysolutions.ailabs.builder.testing.general.iterator.DataIteratorWrapper;
 import com.jbaysolutions.ailabs.builder.testing.local.recordreader.RecordReaderWrapper;
 import com.jbaysolutions.ailabs.builder.testing.TrainingStrategyWrapper;
 import com.jbaysolutions.ailabs.builder.testing.local.split.InputSplitWrapper;
@@ -249,6 +250,14 @@ public class NNModelController extends Controller {
         return ok(
                 Json.toJson(
                         ScoreCalculatorWrapper.generate(ScoreCalculatorWrapper.ScoreCalculatorType.valueOf(scoreType))
+                )
+        );
+    }
+
+    public Result generateCleanLocalDatasetIterator(String iteratorType) {
+        return ok(
+                Json.toJson(
+                        DataIteratorWrapper.generate(DataIteratorWrapper.DataIteratorType.valueOf(iteratorType))
                 )
         );
     }

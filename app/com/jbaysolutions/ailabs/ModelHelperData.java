@@ -2,6 +2,7 @@ package com.jbaysolutions.ailabs;
 
 import com.jbaysolutions.ailabs.builder.nnwrapper.LayerWrapper;
 import com.jbaysolutions.ailabs.builder.nnwrapper.MultiLayerWrapper;
+import com.jbaysolutions.ailabs.builder.testing.general.iterator.DataIteratorWrapper;
 import com.jbaysolutions.ailabs.builder.testing.local.recordreader.RecordReaderWrapper;
 import com.jbaysolutions.ailabs.builder.testing.local.trainer.helper.ClassificationScoreCalculatorWrapper;
 import com.jbaysolutions.ailabs.builder.testing.local.trainer.helper.EpochTerminationConditionWrapper;
@@ -38,6 +39,8 @@ public class ModelHelperData {
     public List<GeneralOption> localScoreCalculator = new ArrayList<GeneralOption>();
 
     public List<GeneralOption> localScoreCalculatorMetric = new ArrayList<GeneralOption>();
+
+    public List<GeneralOption> localDataIteratorTypes = new ArrayList<GeneralOption>();
 
     public ModelHelperData() {
         optimizationAlgorithmList.add(new GeneralOption(OptimizationAlgorithm.CONJUGATE_GRADIENT.name(), "Conjugate Gradient"));
@@ -127,8 +130,9 @@ public class ModelHelperData {
         localScoreCalculatorMetric.add(new GeneralOption(ClassificationScoreCalculatorWrapper.ClassificationMetric.GMEASURE.name(), "G Measure"));
         localScoreCalculatorMetric.add(new GeneralOption(ClassificationScoreCalculatorWrapper.ClassificationMetric.MCC.name(), "MCC"));
 
-
         localRecordReaderTypes.add(new GeneralOption(RecordReaderWrapper.RecordReaderType.CSV_RECORD_READER.name(), "CSV Record Reader"));
+
+        localDataIteratorTypes.add(new GeneralOption(DataIteratorWrapper.DataIteratorType.RECORD_READER_DATA_ITERATOR.name(), "Record Reader Data Iterator"));
     }
 
     public class GeneralOption{
