@@ -53,7 +53,8 @@
 
       <div class="row" v-if="trainer.testingDataIterator && trainer.trainingDataIterator">
         <div class="col-12 text-center mt-3">
-          <button type="button" class="btn btn-success btn-sm" v-on:click="executeTrainingStrategy(training.strategyId)">
+          <button type="button" class="btn btn-success btn-sm" v-on:click="requestExecuteTraining()">
+            <!--executeTrainingStrategy(training.strategyId)-->
             <i class="fas fa-play"></i>
             Execute Training
           </button>
@@ -64,6 +65,9 @@
       ref="addDataIterator"
       @newItem="createDataIterator"
     />
+    <TrainingInProgressModal
+      ref="trainingInProgressModal"
+    />
   </div>
 </template>
 
@@ -72,13 +76,27 @@
 
   import CreateLocalDataIteratorModal from '../../../modals/CreateLocalDataIteratorModal'
   import DataSetIteratorItem from '../../general/iterator/DataSetIteratorItem'
+  import TrainingInProgressModal from '../../../modals/training/TrainingInProgressModal'
+
+  import {generateID, generateTrainingRequest} from '../../../../assets/webSocketRequests'
 
   export default {
     components: {
       CreateLocalDataIteratorModal,
       DataSetIteratorItem,
+      TrainingInProgressModal,
     },
     mounted() {
+      this.$options.sockets.onmessage = (event) => {
+        let message = JSON.parse(event.data);
+        if (message.type==="TRAINING_STARTED") {
+          // console.log("CORRECT TYPE");
+          if (message.uuid===this.trainingRequestID) {
+            // console.log("CORRECT UUID");
+            this.$refs.trainingInProgressModal.openModal(this.trainingRequestID);
+          }
+        }
+      }
     },
     computed: {
       ...mapGetters('dl4j',
@@ -91,14 +109,13 @@
         if (this.training && this.training.rawStrategy) {
           return this.training.rawStrategy;
         } else {
-          return {
-
-          };
+          return {};
         }
-      }
+      },
     },
     data() {
       return {
+        trainingRequestID: null,
       }
     },
     methods: {
@@ -134,6 +151,15 @@
           this.trainer.testingDataIterator = null;
           this.notifyChange();
         }
+      },
+      requestExecuteTraining() {
+        this.trainingRequestID = generateID();
+        this.$socket.sendObj(
+          generateTrainingRequest(
+            this.training.strategyId,
+            this.trainingRequestID
+          )
+        );
       },
       notifyChange() {
         this.$emit('changed');

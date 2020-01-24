@@ -19,11 +19,14 @@ import 'vue-loading-overlay/dist/vue-loading.css';
 /* Notification */
 import Notifications from 'vue-notification';
 
+/* Websockets*/
+import VueNativeSock from 'vue-native-websocket';
 
 window.$ = window.jQuery = require('jquery');
 
 Vue.use(VueI18n);
 Vue.use(Notifications);
+Vue.use(VueNativeSock, 'ws://localhost:9000/v1/ws', { format: 'json' });
 
 /*
 import 'bootstrap/dist/css/bootstrap.min.css';

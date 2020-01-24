@@ -37,5 +37,9 @@ POST        /v1/nnmodels/modeldata/training/persist/:id                         
 
 GET         /v1/nnmodels/modeldata/training/execute/:strategyId                     controllers.NNModelController.executeTrainingStrategy(strategyId: Long)
 
+################# WEBSOCKET ################
+
+GET         /v1/ws                                                                  controllers.WebSocketController.socket()
+
 # Map static resources from the /public folder to the file resource paths
 GET         /*file                                                                  controllers.Assets.at(path="/public", file)
