@@ -12,9 +12,11 @@ libraryDependencies += guice
 
 // Test Database
 libraryDependencies += "com.h2database" % "h2" % "1.4.194"
+
 // ---------- DL4J Libs
 libraryDependencies += "org.deeplearning4j" % "deeplearning4j-core" % "1.0.0-beta4"
 libraryDependencies += "org.deeplearning4j" % "deeplearning4j-cuda-10.0" % "1.0.0-beta4"
+// libraryDependencies += "org.deeplearning4j" % "dl4j-spark_2.11" % "1.0.0-beta3"
 
 // ---------- ND4J Libs
 libraryDependencies += "org.nd4j" % "nd4j-native-platform" % "1.0.0-beta4"

@@ -50,7 +50,7 @@
                     id="layerTypeField"
                     v-model="item.recordReader"
                   >
-                    <option v-for="(item, index) in recordReaders" :value="index">{{item.name}}</option>
+                    <option v-for="(item, index) in recordReaders" :value="item.name">{{item.name}}</option>
                   </select>
                 </fieldset>
               </div>

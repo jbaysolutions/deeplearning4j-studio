@@ -158,3 +158,15 @@ export function persistCurrentTrainingStrategy ({Vue, commit, state}, id) {
       throw error
     })
 }
+
+/* TEMPORARY */
+executeTrainingStrategy
+export function executeTrainingStrategy ({Vue, commit}, id) {
+  return axios.get(jsRoutes.controllers.NNModelController.executeTrainingStrategy(id).url)
+    .then((response) => {
+      return response.data;
+    }).catch((error) => {
+      console.log('Error detected ? ' + error);
+      throw error
+    })
+}

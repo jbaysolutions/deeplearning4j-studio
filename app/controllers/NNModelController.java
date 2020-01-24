@@ -2,10 +2,13 @@ package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.jbaysolutions.ailabs.ModelHelperData;
+import com.jbaysolutions.ailabs.builder.BadConfigurationException;
+import com.jbaysolutions.ailabs.builder.LocalTestingConfigurationBuilder;
 import com.jbaysolutions.ailabs.builder.MultiLayerConfigurationBuilder;
 import com.jbaysolutions.ailabs.builder.nnwrapper.LayerWrapper;
 import com.jbaysolutions.ailabs.builder.nnwrapper.MultiLayerWrapper;
 import com.jbaysolutions.ailabs.builder.testing.general.iterator.DataIteratorWrapper;
+import com.jbaysolutions.ailabs.builder.testing.local.LocalTrainingStrategyWrapper;
 import com.jbaysolutions.ailabs.builder.testing.local.recordreader.RecordReaderWrapper;
 import com.jbaysolutions.ailabs.builder.testing.TrainingStrategyWrapper;
 import com.jbaysolutions.ailabs.builder.testing.local.split.InputSplitWrapper;
@@ -20,8 +23,13 @@ import controllers.response.TrainingStrategyResponse;
 import lombok.extern.slf4j.Slf4j;
 import model.NNModel;
 import model.NNTrainingStrategy;
+import org.deeplearning4j.earlystopping.EarlyStoppingConfiguration;
+import org.deeplearning4j.earlystopping.EarlyStoppingResult;
+import org.deeplearning4j.earlystopping.listener.EarlyStoppingListener;
+import org.deeplearning4j.earlystopping.trainer.EarlyStoppingTrainer;
 import org.deeplearning4j.exception.DL4JInvalidConfigException;
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
+import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import play.libs.Json;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
@@ -260,6 +268,54 @@ public class NNModelController extends Controller {
                         DataIteratorWrapper.generate(DataIteratorWrapper.DataIteratorType.valueOf(iteratorType))
                 )
         );
+    }
+
+    public Result executeTrainingStrategy(long strategyId){
+
+        NNTrainingStrategy item =  NNTrainingStrategy.findStrategyById(strategyId);
+
+        TrainingStrategyWrapper trainingStrategyWrapper = Json.fromJson(item.rawStrategy, TrainingStrategyWrapper.class);
+        MultiLayerWrapper mmW = Json.fromJson(item.model.rawModel, MultiLayerWrapper.class);
+
+        MultiLayerConfiguration conf = MultiLayerConfigurationBuilder.buildConfiguration(mmW);
+        if (trainingStrategyWrapper.trainingType == TrainingStrategyWrapper.TrainingType.LOCAL) {
+
+            EarlyStoppingTrainer trainer = null;
+            try {
+                trainer = LocalTestingConfigurationBuilder.buildConfiguration(
+                        (LocalTrainingStrategyWrapper) trainingStrategyWrapper,
+                        conf
+                );
+            } catch (BadConfigurationException e) {
+                return internalServerError(e.getMessage());
+            }
+
+
+            trainer.setListener(new EarlyStoppingListener<MultiLayerNetwork>() {
+                @Override
+                public void onStart(EarlyStoppingConfiguration<MultiLayerNetwork> esConfig, MultiLayerNetwork net) {
+
+                }
+
+                @Override
+                public void onEpoch(int epochNum, double score, EarlyStoppingConfiguration<MultiLayerNetwork> esConfig, MultiLayerNetwork net) {
+                    /*INDArray output = net.output(testData.getFeatures());
+                    Evaluation eval = new Evaluation(CLASSES_COUNT);
+                    eval.eval(testData.getLabels(), output);
+                    */
+                    System.out.println("Epoch " + epochNum + " - Score : " + score);
+
+                }
+
+                @Override
+                public void onCompletion(EarlyStoppingResult<MultiLayerNetwork> esResult) {
+                    System.out.println("BEST MODEL Epoch " + esResult.getBestModelEpoch());
+                }
+            });
+            EarlyStoppingResult<MultiLayerNetwork> resultEWET = trainer.fit();
+        }
+
+        return ok();
     }
 
 }

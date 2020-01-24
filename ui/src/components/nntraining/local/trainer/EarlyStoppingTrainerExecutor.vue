@@ -53,7 +53,7 @@
 
       <div class="row" v-if="trainer.testingDataIterator && trainer.trainingDataIterator">
         <div class="col-12 text-center mt-3">
-          <button type="button" class="btn btn-success btn-sm">
+          <button type="button" class="btn btn-success btn-sm" v-on:click="executeTrainingStrategy(training.strategyId)">
             <i class="fas fa-play"></i>
             Execute Training
           </button>
@@ -105,6 +105,7 @@
       ...mapActions('dl4j',
         {
           generateCleanLocalDatasetIterator: 'generateCleanLocalDatasetIterator',
+          executeTrainingStrategy: 'executeTrainingStrategy',
         }
       ),
       createDataIterator(item) {

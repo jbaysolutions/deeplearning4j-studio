@@ -35,6 +35,7 @@ GET         /v1/nnmodels/modeldata/training/localiterator/clean/:iteratorType   
 
 POST        /v1/nnmodels/modeldata/training/persist/:id                             controllers.NNModelController.persistCurrentTrainingStrategy(id: Long)
 
+GET         /v1/nnmodels/modeldata/training/execute/:strategyId                     controllers.NNModelController.executeTrainingStrategy(strategyId: Long)
 
 # Map static resources from the /public folder to the file resource paths
 GET         /*file                                                                  controllers.Assets.at(path="/public", file)
