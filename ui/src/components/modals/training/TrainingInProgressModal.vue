@@ -70,23 +70,8 @@
       openModal(requestID) {
         this.requestID = requestID;
         this.finished = false;
-        this.datacollection = {
-          labels: [],
-          datasets: [
-            {
-              label: 'Score',
-              backgroundColor: '#DF691A',
-              data: [],
-              fill: false,
-              lineTension: 0,
-              borderColor: '#DF691A',
-              borderWidth: 1,
-              pointStyle: 'rectRot',
-              pointRadius: 5,
-              pointBorderColor: 'rgb(0, 0, 0)'
-            }
-          ]
-        };
+        this.datacollection.labels= [];
+        this.datacollection.datasets[0].data= [];
 
         $('#trainingInProgressModal').modal('show')
         this.$options.sockets.onmessage = (event) => {
