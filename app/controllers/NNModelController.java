@@ -5,6 +5,7 @@ import com.jbaysolutions.ailabs.ModelHelperData;
 import com.jbaysolutions.ailabs.builder.BadConfigurationException;
 import com.jbaysolutions.ailabs.builder.LocalTestingConfigurationBuilder;
 import com.jbaysolutions.ailabs.builder.MultiLayerConfigurationBuilder;
+import com.jbaysolutions.ailabs.builder.bundle.EarlyStoppingTrainerBundle;
 import com.jbaysolutions.ailabs.builder.nnwrapper.LayerWrapper;
 import com.jbaysolutions.ailabs.builder.nnwrapper.MultiLayerWrapper;
 import com.jbaysolutions.ailabs.builder.testing.general.iterator.DataIteratorWrapper;
@@ -280,7 +281,7 @@ public class NNModelController extends Controller {
         MultiLayerConfiguration conf = MultiLayerConfigurationBuilder.buildConfiguration(mmW);
         if (trainingStrategyWrapper.trainingType == TrainingStrategyWrapper.TrainingType.LOCAL) {
 
-            EarlyStoppingTrainer trainer = null;
+            EarlyStoppingTrainerBundle trainer = null;
             try {
                 trainer = LocalTestingConfigurationBuilder.buildConfiguration(
                         (LocalTrainingStrategyWrapper) trainingStrategyWrapper,
@@ -291,7 +292,7 @@ public class NNModelController extends Controller {
             }
 
 
-            trainer.setListener(new EarlyStoppingListener<MultiLayerNetwork>() {
+            trainer.getEst().setListener(new EarlyStoppingListener<MultiLayerNetwork>() {
                 @Override
                 public void onStart(EarlyStoppingConfiguration<MultiLayerNetwork> esConfig, MultiLayerNetwork net) {
 
@@ -312,7 +313,7 @@ public class NNModelController extends Controller {
                     System.out.println("BEST MODEL Epoch " + esResult.getBestModelEpoch());
                 }
             });
-            EarlyStoppingResult<MultiLayerNetwork> resultEWET = trainer.fit();
+            EarlyStoppingResult<MultiLayerNetwork> resultEWET = trainer.getEst().fit();
         }
 
         return ok();

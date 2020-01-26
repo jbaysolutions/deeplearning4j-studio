@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.jbaysolutions.ailabs.builder.BadConfigurationException;
 import com.jbaysolutions.ailabs.builder.LocalTestingConfigurationBuilder;
 import com.jbaysolutions.ailabs.builder.MultiLayerConfigurationBuilder;
+import com.jbaysolutions.ailabs.builder.bundle.EarlyStoppingTrainerBundle;
 import com.jbaysolutions.ailabs.builder.nnwrapper.MultiLayerWrapper;
 import com.jbaysolutions.ailabs.builder.testing.TrainingStrategyWrapper;
 import com.jbaysolutions.ailabs.builder.testing.local.LocalTrainingStrategyWrapper;
@@ -21,6 +22,8 @@ import org.deeplearning4j.earlystopping.listener.EarlyStoppingListener;
 import org.deeplearning4j.earlystopping.trainer.EarlyStoppingTrainer;
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
+import org.nd4j.evaluation.classification.Evaluation;
+import org.nd4j.linalg.api.ndarray.INDArray;
 import play.libs.Json;
 
 /**
@@ -65,9 +68,10 @@ public class WebSocketMessageHandler {
         MultiLayerWrapper mmW = Json.fromJson(item.model.rawModel, MultiLayerWrapper.class);
 
         MultiLayerConfiguration conf = MultiLayerConfigurationBuilder.buildConfiguration(mmW);
+        
         if (trainingStrategyWrapper.trainingType == TrainingStrategyWrapper.TrainingType.LOCAL) {
 
-            EarlyStoppingTrainer trainer = null;
+            EarlyStoppingTrainerBundle trainer = null;
             try {
                 trainer = LocalTestingConfigurationBuilder.buildConfiguration(
                         (LocalTrainingStrategyWrapper) trainingStrategyWrapper,
@@ -80,23 +84,40 @@ public class WebSocketMessageHandler {
             }
 
 
-            trainer.setListener(new EarlyStoppingListener<MultiLayerNetwork>() {
+            EarlyStoppingTrainerBundle finalTrainer = trainer;
+            trainer.getEst().setListener(new EarlyStoppingListener<MultiLayerNetwork>() {
                 @Override
                 public void onStart(EarlyStoppingConfiguration<MultiLayerNetwork> esConfig, MultiLayerNetwork net) {
-
+                    log.info("Training is Starting");
                 }
 
                 @Override
                 public void onEpoch(int epochNum, double score, EarlyStoppingConfiguration<MultiLayerNetwork> esConfig, MultiLayerNetwork net) {
-                            /*INDArray output = net.output(testData.getFeatures());
-                            Evaluation eval = new Evaluation(CLASSES_COUNT);
-                            eval.eval(testData.getLabels(), output);
-                            */
+
+                    Evaluation eval = net.evaluate(finalTrainer.getTestingDataSetIterator());
+                    log.info("Training in Progress - Epoch {} ; F1: {} ; Accuracy: {} ; Precision: {} ; Recall: {} - Score: {}",
+                            epochNum,
+                            eval.f1(),
+                            eval.accuracy(),
+                            eval.precision(),
+                            eval.recall(),
+                            score
+                    );
 
                     String messageOut = "Epoch " + epochNum + " - Score : " + score;
                     out.tell(
                             Json.toJson(
-                                    new TrainingUpdateMessage(message.uuid, messageOut, epochNum, score)
+                                    new TrainingUpdateMessage(
+                                            message.uuid,
+                                            messageOut,
+                                            epochNum,
+                                            score,
+
+                                            eval.f1(),
+                                            eval.accuracy(),
+                                            eval.precision(),
+                                            eval.recall()
+                                    )
                             ),
                             out
                     );
@@ -104,6 +125,7 @@ public class WebSocketMessageHandler {
 
                 @Override
                 public void onCompletion(EarlyStoppingResult<MultiLayerNetwork> esResult) {
+                    log.info("Training is Finished - Best Epoch: {} with Score: {}", esResult.getBestModelEpoch(), esResult.getBestModelScore() );
                     String messageOut = "BEST MODEL Epoch " + esResult.getBestModelEpoch();
                     out.tell(
                             Json.toJson(
@@ -113,9 +135,7 @@ public class WebSocketMessageHandler {
                     );
                 }
             });
-            EarlyStoppingResult<MultiLayerNetwork> resultEWET = trainer.fit();
+            EarlyStoppingResult<MultiLayerNetwork> resultEWET = trainer.getEst().fit();
         }
-
-
     }
 }

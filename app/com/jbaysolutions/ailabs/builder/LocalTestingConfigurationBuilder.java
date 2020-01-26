@@ -1,5 +1,6 @@
 package com.jbaysolutions.ailabs.builder;
 
+import com.jbaysolutions.ailabs.builder.bundle.EarlyStoppingTrainerBundle;
 import com.jbaysolutions.ailabs.builder.testing.TrainingStrategyWrapper;
 import com.jbaysolutions.ailabs.builder.testing.general.iterator.DataIteratorWrapper;
 import com.jbaysolutions.ailabs.builder.testing.general.iterator.RecordReaderDataSetIteratorWrapper;
@@ -40,7 +41,7 @@ import java.util.List;
  */
 public class LocalTestingConfigurationBuilder {
 
-    public static EarlyStoppingTrainer buildConfiguration(LocalTrainingStrategyWrapper def, MultiLayerConfiguration nn) throws BadConfigurationException {
+    public static EarlyStoppingTrainerBundle buildConfiguration(LocalTrainingStrategyWrapper def, MultiLayerConfiguration nn) throws BadConfigurationException {
 
         Hashtable<String, RecordReader> recordReaderList = new Hashtable<>();
 
@@ -141,7 +142,7 @@ public class LocalTestingConfigurationBuilder {
                 conf, nn, trainingDataSetIterator
         );
 
-        return eet;
+        return new EarlyStoppingTrainerBundle(eet, testingDataSetIterator);
     }
 
     private static ScoreCalculator generateScoreCalculator(ScoreCalculatorWrapper scoreCalculatorWrapper, DataSetIterator testingDataSetIterator) {
