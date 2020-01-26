@@ -160,6 +160,8 @@
             this.trainingRequestID
           )
         );
+        // TESTING -----
+        // this.$refs.trainingInProgressModal.openModal(this.trainingRequestID);
       },
       notifyChange() {
         this.$emit('changed');

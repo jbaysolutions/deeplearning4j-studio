@@ -17,7 +17,8 @@ public abstract class WSBaseResponse {
 
     public enum WSBaseResponseType {
         TRAINING_STARTED,
-        TRAINING_UPDATE;
+        TRAINING_UPDATE,
+        TRAINING_FINISHED;
     }
 
 }

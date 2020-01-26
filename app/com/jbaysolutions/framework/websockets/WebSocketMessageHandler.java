@@ -9,6 +9,7 @@ import com.jbaysolutions.ailabs.builder.nnwrapper.MultiLayerWrapper;
 import com.jbaysolutions.ailabs.builder.testing.TrainingStrategyWrapper;
 import com.jbaysolutions.ailabs.builder.testing.local.LocalTrainingStrategyWrapper;
 import com.jbaysolutions.framework.websockets.request.StartTrainingMessage;
+import com.jbaysolutions.framework.websockets.response.TrainingFinishedMessage;
 import com.jbaysolutions.framework.websockets.response.TrainingStartedMessage;
 import com.jbaysolutions.framework.websockets.response.TrainingUpdateMessage;
 import lombok.extern.slf4j.Slf4j;
@@ -95,7 +96,7 @@ public class WebSocketMessageHandler {
                     String messageOut = "Epoch " + epochNum + " - Score : " + score;
                     out.tell(
                             Json.toJson(
-                                    new TrainingUpdateMessage(message.uuid, messageOut)
+                                    new TrainingUpdateMessage(message.uuid, messageOut, epochNum, score)
                             ),
                             out
                     );
@@ -106,7 +107,7 @@ public class WebSocketMessageHandler {
                     String messageOut = "BEST MODEL Epoch " + esResult.getBestModelEpoch();
                     out.tell(
                             Json.toJson(
-                                    new TrainingUpdateMessage(message.uuid, messageOut)
+                                    new TrainingFinishedMessage(message.uuid, messageOut, esResult.getBestModelEpoch(), esResult.getBestModelScore())
                             ),
                             out
                     );
