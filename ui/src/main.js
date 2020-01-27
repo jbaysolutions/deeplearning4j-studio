@@ -26,7 +26,12 @@ window.$ = window.jQuery = require('jquery');
 
 Vue.use(VueI18n);
 Vue.use(Notifications);
-Vue.use(VueNativeSock, 'ws://localhost:9000/v1/ws', { format: 'json' });
+Vue.use(VueNativeSock, 'ws://localhost:9000/v1/ws', {
+  format: 'json',
+  reconnection: true, // (Boolean) whether to reconnect automatically (false)
+  reconnectionAttempts: 10, // (Number) number of reconnection attempts before giving up (Infinity),
+  // reconnectionDelay: 3000, // (Number) how long to initially wait before attempting a new (1000)
+});
 
 /*
 import 'bootstrap/dist/css/bootstrap.min.css';
