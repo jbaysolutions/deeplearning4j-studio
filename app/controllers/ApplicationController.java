@@ -29,6 +29,7 @@ public class ApplicationController extends Controller {
                         routes.javascript.NNModelController.generateCleanLocalIterationTermCodition(),
                         routes.javascript.NNModelController.generateCleanLocalScoreCalculator(),
                         routes.javascript.NNModelController.generateCleanLocalDatasetIterator(),
+                        routes.javascript.NNModelController.generateCleanPreprocessorNormalizer(),
                         routes.javascript.NNModelController.getTrainingStrategyResultsList(),
 
                         routes.javascript.NNModelController.executeTrainingStrategy(),

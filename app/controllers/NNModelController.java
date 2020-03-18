@@ -9,6 +9,7 @@ import com.jbaysolutions.ailabs.builder.bundle.EarlyStoppingTrainerBundle;
 import com.jbaysolutions.ailabs.builder.nnwrapper.LayerWrapper;
 import com.jbaysolutions.ailabs.builder.nnwrapper.MultiLayerWrapper;
 import com.jbaysolutions.ailabs.builder.testing.general.iterator.DataIteratorWrapper;
+import com.jbaysolutions.ailabs.builder.testing.general.preprocessor.PreprocessorNormalizerWrapper;
 import com.jbaysolutions.ailabs.builder.testing.local.LocalTrainingStrategyWrapper;
 import com.jbaysolutions.ailabs.builder.testing.local.recordreader.RecordReaderWrapper;
 import com.jbaysolutions.ailabs.builder.testing.TrainingStrategyWrapper;
@@ -283,6 +284,14 @@ public class NNModelController extends Controller {
                 )
         );
     }
+
+    public Result generateCleanPreprocessorNormalizer(String preprocessorType) {
+            return ok(
+                    Json.toJson(
+                            PreprocessorNormalizerWrapper.generate(PreprocessorNormalizerWrapper.PreprocessorNormalizerType.valueOf(preprocessorType))
+                    )
+            );
+        }
 
     public Result executeTrainingStrategy(long strategyId){
 

@@ -2,6 +2,7 @@ package com.jbaysolutions.ailabs.builder.testing.local;
 
 import com.jbaysolutions.ailabs.builder.testing.TrainingStrategyWrapper;
 import com.jbaysolutions.ailabs.builder.testing.general.iterator.DataIteratorWrapper;
+import com.jbaysolutions.ailabs.builder.testing.general.preprocessor.PreprocessorNormalizerWrapper;
 import com.jbaysolutions.ailabs.builder.testing.local.recordreader.RecordReaderWrapper;
 import com.jbaysolutions.ailabs.builder.testing.local.trainer.EarlyStoppingTrainerWrapper;
 
@@ -26,8 +27,7 @@ public class LocalTrainingStrategyWrapper extends TrainingStrategyWrapper {
     public DataIteratorWrapper testingDataIterator = null;
 
     // ---------- Normalizer ------------
-
-    // TODO , do I want this here ?????
+    public PreprocessorNormalizerWrapper preprocessorNormalizerWrapper = null;
 
     public LocalTrainingStrategyWrapper() {
         this.trainingType = TrainingType.LOCAL;

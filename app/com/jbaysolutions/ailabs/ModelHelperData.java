@@ -3,6 +3,7 @@ package com.jbaysolutions.ailabs;
 import com.jbaysolutions.ailabs.builder.nnwrapper.LayerWrapper;
 import com.jbaysolutions.ailabs.builder.nnwrapper.MultiLayerWrapper;
 import com.jbaysolutions.ailabs.builder.testing.general.iterator.DataIteratorWrapper;
+import com.jbaysolutions.ailabs.builder.testing.general.preprocessor.PreprocessorNormalizerWrapper;
 import com.jbaysolutions.ailabs.builder.testing.local.recordreader.RecordReaderWrapper;
 import com.jbaysolutions.ailabs.builder.testing.local.trainer.helper.ClassificationScoreCalculatorWrapper;
 import com.jbaysolutions.ailabs.builder.testing.local.trainer.helper.EpochTerminationConditionWrapper;
@@ -41,6 +42,7 @@ public class ModelHelperData {
     public List<GeneralOption> localScoreCalculatorMetric = new ArrayList<GeneralOption>();
 
     public List<GeneralOption> localDataIteratorTypes = new ArrayList<GeneralOption>();
+    public List<GeneralOption> preprocessorNormalizerTypes = new ArrayList<GeneralOption>();
 
     public ModelHelperData() {
         optimizationAlgorithmList.add(new GeneralOption(OptimizationAlgorithm.CONJUGATE_GRADIENT.name(), "Conjugate Gradient"));
@@ -133,6 +135,8 @@ public class ModelHelperData {
         localRecordReaderTypes.add(new GeneralOption(RecordReaderWrapper.RecordReaderType.CSV_RECORD_READER.name(), "CSV Record Reader"));
 
         localDataIteratorTypes.add(new GeneralOption(DataIteratorWrapper.DataIteratorType.RECORD_READER_DATA_ITERATOR.name(), "Record Reader Data Iterator"));
+
+        preprocessorNormalizerTypes.add(new GeneralOption(PreprocessorNormalizerWrapper.PreprocessorNormalizerType.NORMALIZER_STANDARDIZE.name(), "Normalizer Standardize","Pre processor for DataSet that normalizes feature values (and optionally label values) to have 0 mean and a standard deviation of 1"));
     }
 
     public class GeneralOption{

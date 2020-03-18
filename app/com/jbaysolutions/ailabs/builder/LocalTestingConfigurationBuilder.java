@@ -4,6 +4,8 @@ import com.jbaysolutions.ailabs.builder.bundle.EarlyStoppingTrainerBundle;
 import com.jbaysolutions.ailabs.builder.testing.TrainingStrategyWrapper;
 import com.jbaysolutions.ailabs.builder.testing.general.iterator.DataIteratorWrapper;
 import com.jbaysolutions.ailabs.builder.testing.general.iterator.RecordReaderDataSetIteratorWrapper;
+import com.jbaysolutions.ailabs.builder.testing.general.preprocessor.NormalizerStandardizeWrapper;
+import com.jbaysolutions.ailabs.builder.testing.general.preprocessor.PreprocessorNormalizerWrapper;
 import com.jbaysolutions.ailabs.builder.testing.local.LocalTrainingStrategyWrapper;
 import com.jbaysolutions.ailabs.builder.testing.local.recordreader.CSVRecordReaderWrapper;
 import com.jbaysolutions.ailabs.builder.testing.local.recordreader.RecordReaderWrapper;
@@ -24,7 +26,6 @@ import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.nd4j.evaluation.classification.Evaluation;
 import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
-import org.nd4j.linalg.dataset.api.preprocessor.DataNormalization;
 import org.nd4j.linalg.dataset.api.preprocessor.NormalizerStandardize;
 
 import java.io.File;
@@ -109,11 +110,33 @@ public class LocalTestingConfigurationBuilder {
         }
 
 
-        DataNormalization normalizer = new NormalizerStandardize();
-        normalizer.fit(trainingDataSetIterator);
-        trainingDataSetIterator.setPreProcessor(normalizer);
-        testingDataSetIterator.setPreProcessor(normalizer);
-        
+        /* Normalizer now */
+
+        if (def.preprocessorNormalizerWrapper != null) {
+
+            if (def.preprocessorNormalizerWrapper.type == PreprocessorNormalizerWrapper.PreprocessorNormalizerType.NORMALIZER_STANDARDIZE) {
+                NormalizerStandardize normalizer = new NormalizerStandardize();
+                NormalizerStandardizeWrapper item = (NormalizerStandardizeWrapper)def.preprocessorNormalizerWrapper;
+
+                if (item.useTrainingDataForFit != null) {
+                    if (item.useTrainingDataForFit == NormalizerStandardizeWrapper.NormalizerStandardizeTraining.TRAINING_DS)
+                        normalizer.fit(trainingDataSetIterator);
+                    else if (item.useTrainingDataForFit == NormalizerStandardizeWrapper.NormalizerStandardizeTraining.TESTING_DS)
+                        normalizer.fit(testingDataSetIterator);
+                    else if (item.useTrainingDataForFit == NormalizerStandardizeWrapper.NormalizerStandardizeTraining.BOTH) {
+
+                        throw new RuntimeException("Not Implemented Yet"); // TODO Implement this !
+
+                    }
+
+                    trainingDataSetIterator.setPreProcessor(normalizer);
+                    testingDataSetIterator.setPreProcessor(normalizer);
+                }
+            }
+
+        }
+
+
         /* Working on Trainer Config now */
 
         EarlyStoppingTrainerWrapper item = def.earlyStoppingTrainer;

@@ -29,6 +29,10 @@
         @changed="updated=true"
       />
 
+      <PreprocessorNormalizerConfiguration
+        @changed="updated=true"
+      />
+
       <EarlyStoppingTrainerExecutor
         @changed="updated=true"
       />
@@ -46,6 +50,7 @@
 
 <script>
   import {mapActions, mapGetters} from 'vuex';
+  import PreprocessorNormalizerConfiguration from '../nntraining/local/preprocessor/PreprocessorNormalizerConfiguration'
   import RecordReaderConfiguration from '../nntraining/local/recordReaders/RecordReaderConfiguration'
   import EarlyStoppingTrainerConfig from '../nntraining/local/trainer/EarlyStoppingTrainerConfig'
   import EarlyStoppingTrainerExecutor from '../nntraining/local/trainer/EarlyStoppingTrainerExecutor'
@@ -56,6 +61,7 @@
   export default {
     components: {
       RecordReaderConfiguration,
+      PreprocessorNormalizerConfiguration,
       EarlyStoppingTrainerConfig,
       EarlyStoppingTrainerExecutor,
       EarlyStoppingTrainerResults,
