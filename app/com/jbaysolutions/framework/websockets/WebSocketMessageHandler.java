@@ -13,9 +13,13 @@ import com.jbaysolutions.framework.websockets.request.StartTrainingMessage;
 import com.jbaysolutions.framework.websockets.response.TrainingFinishedMessage;
 import com.jbaysolutions.framework.websockets.response.TrainingStartedMessage;
 import com.jbaysolutions.framework.websockets.response.TrainingUpdateMessage;
+import io.ebean.Ebean;
+import io.ebean.Transaction;
 import lombok.extern.slf4j.Slf4j;
+import model.EpochResult;
 import model.NNModel;
 import model.NNTrainingStrategy;
+import model.TrainingStrategyResult;
 import org.deeplearning4j.earlystopping.EarlyStoppingConfiguration;
 import org.deeplearning4j.earlystopping.EarlyStoppingResult;
 import org.deeplearning4j.earlystopping.listener.EarlyStoppingListener;
@@ -25,6 +29,9 @@ import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.nd4j.evaluation.classification.Evaluation;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import play.libs.Json;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * (c) JBay Solutions 2010-2012 All rights reserved.
@@ -55,12 +62,9 @@ public class WebSocketMessageHandler {
     }
 
     public void handleMessage(StartTrainingMessage message) {
-        out.tell(
-                Json.toJson(
-                        new TrainingStartedMessage(message.uuid)
-                ),
-                out
-        );
+
+
+        Transaction transaction = Ebean.beginTransaction();
 
         NNTrainingStrategy item =  NNTrainingStrategy.findStrategyById(message.strategyId);
 
@@ -68,7 +72,7 @@ public class WebSocketMessageHandler {
         MultiLayerWrapper mmW = Json.fromJson(item.model.rawModel, MultiLayerWrapper.class);
 
         MultiLayerConfiguration conf = MultiLayerConfigurationBuilder.buildConfiguration(mmW);
-        
+
         if (trainingStrategyWrapper.trainingType == TrainingStrategyWrapper.TrainingType.LOCAL) {
 
             EarlyStoppingTrainerBundle trainer = null;
@@ -86,9 +90,26 @@ public class WebSocketMessageHandler {
 
             EarlyStoppingTrainerBundle finalTrainer = trainer;
             trainer.getEst().setListener(new EarlyStoppingListener<MultiLayerNetwork>() {
+
+                TrainingStrategyResult trainingResult;
+
                 @Override
                 public void onStart(EarlyStoppingConfiguration<MultiLayerNetwork> esConfig, MultiLayerNetwork net) {
                     log.info("Training is Starting");
+                    out.tell(
+                            Json.toJson(
+                                    new TrainingStartedMessage(message.uuid)
+                            ),
+                            out
+                    );
+
+                    trainingResult = TrainingStrategyResult.createStrategyResult(
+                            item,
+                            item.version,
+                            item.rawStrategy
+                    );
+                    item.version++;
+                    item.update();
                 }
 
                 @Override
@@ -103,6 +124,15 @@ public class WebSocketMessageHandler {
                             eval.recall(),
                             score
                     );
+
+                    EpochResult res = EpochResult.createEpochResult(
+                            trainingResult, epochNum, score,
+                            eval.f1(),
+                            eval.accuracy(),
+                            eval.precision(),
+                            eval.recall()
+                    );
+                    trainingResult.epochResults.add(res);
 
                     String messageOut = "Epoch " + epochNum + " - Score : " + score;
                     out.tell(
@@ -133,9 +163,42 @@ public class WebSocketMessageHandler {
                             ),
                             out
                     );
+
+                    try {
+                        File tempFile = File.createTempFile(item.strategyId+ "-final-"+esResult.getBestModelEpoch(),"zip");
+                        esResult.getBestModel().save(
+                                tempFile , true
+                        );
+                        trainingResult.bestEpoch = esResult.getBestModelEpoch();
+                        trainingResult.bestScore = esResult.getBestModelScore();
+                        trainingResult.savedfile = tempFile;
+                        trainingResult.update();
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        log.error("Could not Save");
+                    }
+
+                    NNTrainingStrategy.updateToExecuted(item);
+                    /*try {
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        // TODO SEND ERROR BACK
+                        transaction.rollback();
+                    }*/
                 }
             });
-            EarlyStoppingResult<MultiLayerNetwork> resultEWET = trainer.getEst().fit();
+
+
+            try {
+                EarlyStoppingResult<MultiLayerNetwork> resultEWET = trainer.getEst().fit();
+                transaction.commit();
+            } catch (Exception e) {
+                transaction.rollback();
+                // TODO SEND ERROR BACK
+                e.printStackTrace();
+            }
         }
     }
 }

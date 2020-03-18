@@ -26,6 +26,7 @@
           <tr class="table-primary">
             <th scope="col">#</th>
             <th scope="col">Training Strategy Name</th>
+            <th scope="col">Current<br/>Version</th>
             <th scope="col">Type</th>
             <th scope="col">Status</th>
             <th scope="col"></th>
@@ -35,6 +36,7 @@
           <tr v-for="(trainset, index) in modeldata.trainingStrategyList">
             <th scope="row">{{index+1}}</th>
             <td>{{trainset.name}}</td>
+            <td>{{trainset.version}}</td>
             <td>{{trainset.rawStrategy.trainingType}}</td>
             <td>{{trainset.status}}</td>
             <td width="1">
@@ -67,7 +69,7 @@
                     class="btn btn-primary btn-sm">
               <i class="fas fa-chevron-left"></i>
             </button>
-            Training Strategy: <b>{{training.name}}</b></h3>
+            Training Strategy: <b>{{training.name}}</b>  <i>(Version: {{training.version}})</i></h3>
         </div>
       </div>
 

@@ -35,6 +35,7 @@
 
 <script>
 
+  import {mapActions, mapGetters} from 'vuex';
   import TrainingProgressWidget from '../../nntraining/general/charts/TrainingProgressWidget'
 
   export default {
@@ -120,13 +121,24 @@
             console.log("TRAINING FINISHED DATA !!!! : " + event.data);
             this.modalTitle = 'Training Finished';
             this.finished = true;
+            this.getTrainingStrategy(this.training.strategyId);
           }
         }
       }
     },
     computed: {
+      ...mapGetters('dl4j',
+        {
+          training: 'getCurrentTrainingStrategy',
+        },
+      ),
     },
     methods: {
+      ...mapActions('dl4j',
+        {
+          getTrainingStrategy: 'getTrainingStrategy',
+        }
+      ),
       openModal(requestID) {
         this.modalTitle = 'Training in Progress';
         this.requestID = requestID;

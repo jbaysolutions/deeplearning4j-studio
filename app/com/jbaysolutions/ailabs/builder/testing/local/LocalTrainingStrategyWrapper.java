@@ -25,6 +25,10 @@ public class LocalTrainingStrategyWrapper extends TrainingStrategyWrapper {
     
     public DataIteratorWrapper testingDataIterator = null;
 
+    // ---------- Normalizer ------------
+
+    // TODO , do I want this here ?????
+
     public LocalTrainingStrategyWrapper() {
         this.trainingType = TrainingType.LOCAL;
     }

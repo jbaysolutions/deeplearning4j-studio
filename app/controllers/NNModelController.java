@@ -20,10 +20,12 @@ import controllers.request.CreateModelRequest;
 import controllers.request.CreateTrainingRequest;
 import controllers.response.GeneralResponse;
 import controllers.response.ModelDataReponse;
+import controllers.response.TrainingResultsResponse;
 import controllers.response.TrainingStrategyResponse;
 import lombok.extern.slf4j.Slf4j;
 import model.NNModel;
 import model.NNTrainingStrategy;
+import model.TrainingStrategyResult;
 import org.deeplearning4j.earlystopping.EarlyStoppingConfiguration;
 import org.deeplearning4j.earlystopping.EarlyStoppingResult;
 import org.deeplearning4j.earlystopping.listener.EarlyStoppingListener;
@@ -180,6 +182,7 @@ public class NNModelController extends Controller {
         strategy.name = req.name;
         strategy.model = model;
         strategy.rawStrategy = Json.toJson(TrainingStrategyWrapper.generate(req.type));
+        strategy.version = 1;
         strategy.save();
         return getAllTrainingStrategies(req.modelId);
     }
@@ -194,6 +197,7 @@ public class NNModelController extends Controller {
     }
 
     public Result getTrainingStrategy(long strategyId) {
+        log.debug("-------------- GET STRAT");
         NNTrainingStrategy item =  NNTrainingStrategy.findStrategyById(strategyId);
         return ok(
                 Json.toJson(
@@ -207,6 +211,15 @@ public class NNModelController extends Controller {
         NNTrainingStrategy.deleteStrategyById(id);
 
         return ok();
+    }
+
+    public Result getTrainingStrategyResultsList(long strategyId) {
+        List<TrainingStrategyResult> resultList =  TrainingStrategyResult.findStrategyResultsById(strategyId);
+        return ok(
+                Json.toJson(
+                        new TrainingResultsResponse(resultList)
+                )
+        );
     }
 
     @BodyParser.Of(BodyParser.Json.class)
@@ -317,6 +330,20 @@ public class NNModelController extends Controller {
         }
 
         return ok();
+    }
+
+    public Result downloadTrainingResultsFile(long trainingResultId) {
+
+        TrainingStrategyResult result = TrainingStrategyResult.findSpecificResult(trainingResultId);
+        if (result == null)
+            return notFound();
+
+        response().setHeader("Content-disposition","attachment; filename=TrainingResult-" + trainingResultId + ".zip" );
+        return ok(
+                result.savedfile
+        )
+                .as("application/zip");
+
     }
 
 }

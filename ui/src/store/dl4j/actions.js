@@ -86,6 +86,17 @@ export function getTrainingStrategy ({Vue, commit}, id) {
     })
 }
 
+export function getTrainingStrategyResultsList ({Vue, commit}, id) {
+  return axios.get(jsRoutes.controllers.NNModelController.getTrainingStrategyResultsList(id).url)
+    .then((response) => {
+      //commit('setCurrentTrainingStrategy', response.data);
+      return response.data;
+    }).catch((error) => {
+      console.log('Error detected ? ' + error);
+      throw error
+    })
+}
+
 export function generateCleanRecordReader ({Vue, commit}, type) {
   return axios.get(jsRoutes.controllers.NNModelController.generateCleanRecordReader(type).url)
     .then((response) => {

@@ -18,6 +18,10 @@
     </div>
 
     <div v-if="training && training.rawStrategy && training.rawStrategy.trainingType==='LOCAL'" class="col-12 mt-3">
+      <EarlyStoppingTrainerResults
+        v-if="training.version>1"
+      />
+
       <RecordReaderConfiguration
         @changed="updated=true"
       />
@@ -45,6 +49,7 @@
   import RecordReaderConfiguration from '../nntraining/local/recordReaders/RecordReaderConfiguration'
   import EarlyStoppingTrainerConfig from '../nntraining/local/trainer/EarlyStoppingTrainerConfig'
   import EarlyStoppingTrainerExecutor from '../nntraining/local/trainer/EarlyStoppingTrainerExecutor'
+  import EarlyStoppingTrainerResults from '../nntraining/local/trainer/EarlyStoppingTrainerResults'
 
   import GenerarErrorModal from '../../components/modals/GenerarErrorModal';
 
@@ -53,6 +58,7 @@
       RecordReaderConfiguration,
       EarlyStoppingTrainerConfig,
       EarlyStoppingTrainerExecutor,
+      EarlyStoppingTrainerResults,
 
       GenerarErrorModal,
     },

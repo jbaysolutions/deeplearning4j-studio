@@ -11,7 +11,9 @@ scalaVersion := "2.12.2"
 libraryDependencies += guice
 
 // Test Database
-libraryDependencies += "com.h2database" % "h2" % "1.4.194"
+libraryDependencies += javaJdbc
+// libraryDependencies += "com.h2database" % "h2" % "1.4.194"
+libraryDependencies += "mysql" % "mysql-connector-java" % "5.1.21"
 
 // ---------- DL4J Libs
 libraryDependencies += "org.deeplearning4j" % "deeplearning4j-core" % "1.0.0-beta4"

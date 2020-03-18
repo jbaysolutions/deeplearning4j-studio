@@ -108,6 +108,7 @@ public class LocalTestingConfigurationBuilder {
             throw new BadConfigurationException("No Testing DataSet Iterator defined");
         }
 
+
         DataNormalization normalizer = new NormalizerStandardize();
         normalizer.fit(trainingDataSetIterator);
         trainingDataSetIterator.setPreProcessor(normalizer);

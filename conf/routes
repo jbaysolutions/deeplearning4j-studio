@@ -36,6 +36,10 @@ GET         /v1/nnmodels/modeldata/training/localiterator/clean/:iteratorType   
 POST        /v1/nnmodels/modeldata/training/persist/:id                             controllers.NNModelController.persistCurrentTrainingStrategy(id: Long)
 
 GET         /v1/nnmodels/modeldata/training/execute/:strategyId                     controllers.NNModelController.executeTrainingStrategy(strategyId: Long)
+GET         /v1/nnmodels/modeldata/training/results/:id                             controllers.NNModelController.getTrainingStrategyResultsList(id: Long)
+
+GET         /v1/nnmodels/modeldata/training/resultfile/:trainingResultId            controllers.NNModelController.downloadTrainingResultsFile(trainingResultId: Long)
+
 
 ################# WEBSOCKET ################
 

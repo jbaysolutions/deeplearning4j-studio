@@ -1,8 +1,10 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.jbaysolutions.ailabs.builder.testing.TrainingStrategyWrapper;
 import controllers.request.CreateModelRequest;
+import io.ebean.Ebean;
 import io.ebean.Finder;
 import io.ebean.Model;
 import play.libs.Json;
@@ -10,6 +12,7 @@ import play.libs.Json;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.util.Date;
 import java.util.List;
 
@@ -28,11 +31,17 @@ public class NNTrainingStrategy extends Model {
 
     public String name;
 
+    public int version;
+
     public Date creationDate;
 
     public JsonNode rawStrategy;
 
     public TrainingStatus status = TrainingStatus.DRAFT;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "strategy", orphanRemoval = true)
+    public List<TrainingStrategyResult> results;
 
     @ManyToOne
     public NNModel model;
@@ -75,6 +84,15 @@ public class NNTrainingStrategy extends Model {
 
     public static void deleteStrategyById(long id) {
         find.deleteById(id);
+    }
+
+    public static void updateToExecuted(long id) {
+        find.update().set("status", TrainingStatus.EXECUTED).where().eq("strategyId", id);
+    }
+
+    public static void updateToExecuted(NNTrainingStrategy strategy) {
+        strategy.status = TrainingStatus.EXECUTED;
+        strategy.update();
     }
 
     public enum TrainingStatus {
